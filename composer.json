@@ -1,0 +1,22 @@
+{
+    "name": "startpl/t2cms-core",
+    "description": "Multidomain & Multilanguage CMS based on Yii2",
+    "type": "yii2-extension",
+    "keywords": ["cms yii2"," multisite cms"," multilanguage cms"," multidomain cms"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "koperdog",
+            "email": "koperdog.dev@gmail.com",
+            "role": "Project lead and developer"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "startpl\\t2cms\\": ""
+        }
+    }
+}
