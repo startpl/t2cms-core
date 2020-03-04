@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @link https://github.com/startpl/t2cms
+ * @link https://github.com/t2cms/sitemanager
  * @copyright Copyright (c) 2019 Koperdog
- * @license https://github.com/startpl/t2cms/blob/master/LICENSE
+ * @license https://github.com/startpl/t2cms-core/sitemanager/blob/master/LICENSE
  */
 
 namespace t2cms\sitemanager\controllers;

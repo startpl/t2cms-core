@@ -4,6 +4,7 @@
     "type": "yii2-extension",
     "keywords": ["cms yii2"," multisite cms"," multilanguage cms"," multidomain cms"],
     "license": "BSD-3-Clause",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "koperdog",
