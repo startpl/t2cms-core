@@ -11,8 +11,7 @@ $this->title = Yii::t('sitemanager', 'Settings of Domain: {name}', [
     'name' => $model->domain,
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('sitemanager', 'Domains'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('sitemanager', 'Update');
+$this->params['breadcrumbs'][] = $model->name;
 
 \t2cms\sitemanager\AssetBundle::register($this);
 
@@ -20,7 +19,12 @@ $this->registerJsVar('i18n', ['confirm' => \Yii::t('sitemanager', 'Are you sure?
 ?>
 <div class="domain-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="section-justify">
+        <h1><?= Html::encode($this->title) ?></h1>
+        <div class="zone-section">
+            <?= t2cms\sitemanager\widgets\local\LanguageList::widget();?>
+        </div>
+    </div>
 
     <div class="domain-form">
         <?php $form = ActiveForm::begin(); ?>

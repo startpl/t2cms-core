@@ -62,7 +62,7 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        $language_id = \Yii::$app->session->get('_language');
+        $language_id = \t2cms\sitemanager\components\Languages::getEditorLangaugeId();
         $domain_id   = null;
         
         $settings = $this->findModels(
@@ -103,6 +103,28 @@ class DefaultController extends Controller
         }
         
         return $this->render('create', ['model' => $form]);
+    }
+    
+    public function actionUpdate($id)
+    {        
+        $model = $this->findModel($id);
+        
+        if($model->status != Setting::STATUS['CUSTOM']) throw new NotFoundHttpException(Yii::t('sitemanager', 'The requested page does not exist.'));
+        
+//        debug($model->generalValue);
+        
+        if(($model->load(\Yii::$app->request->post()) && $model->validate())
+                && ($model->generalValue->load(\Yii::$app->request->post()) && $model->generalValue->validate())){
+            if($this->settingService->update($model)){
+                \Yii::$app->session->setFlash('success', \Yii::t('sitemanager', 'Success save'));
+                $this->redirect(['/manager/domains/index']);
+            }
+            else{
+                \Yii::$app->session->setFlash('error', \Yii::t('sitemanager/error', 'Error save'));
+            }
+        }
+        
+        return $this->render('update', ['model' => $model]);
     }
     
     public function actionDelete($id)

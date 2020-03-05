@@ -53,6 +53,28 @@ class SettingService {
     }
     
     /**
+     * Updates setting
+     * 
+     * @param Setting $model
+     * @param type $status
+     * @return bool
+     */
+    public function update(Setting $form): bool
+    {
+        $transaction = \Yii::$app->db->beginTransaction();
+        try{
+            $this->settingRepository->save($form);
+            $this->settingRepository->save($form->generalValue);
+            $transaction->commit();
+        }catch(\RuntimeException $e){
+            $transaction->rollBack();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
      * Saves all values of settings
      * 
      * @param array $settings

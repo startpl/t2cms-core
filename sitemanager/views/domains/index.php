@@ -16,9 +16,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a(Yii::t('sitemanager', 'Create Domain'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <div class="section-justify">
+        <p>
+            <?= Html::a(Yii::t('sitemanager', 'Create Domain'), ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+        <div class="zone-section">
+            <?= t2cms\sitemanager\widgets\local\LanguageList::widget();?>
+        </div>
+    </div>
 
     <?php // Pjax::begin(); ?>
 
