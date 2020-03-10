@@ -18,7 +18,7 @@ use yii\web\AssetBundle;
  */
 class TreeViewAsset extends AssetBundle
 {
-    public $sourcePath = '@vendor/koperdog/yii2-treeview/assets';
+    public $sourcePath = '@vendor/startpl/t2cms/treeview/assets';
     
     public $css = [
         'css/treeview.css',
