@@ -36,18 +36,23 @@
     position:relative;
     left:22px;
     display: inline-block;
-    font-family: "Glyphicons Halflings";
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 .change-zone.language:before{
     top:2px;
-    content: "\e135";
+    content: "\f1ab";
 }
 .change-zone.domain:before{
     top:3px;
-    content: "\e012";
+    content: "\f233";
+}
+.home-page-items{
+    display:none;
+}
+.home-page-items.active{
+    display:block;
 }

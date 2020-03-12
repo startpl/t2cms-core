@@ -55,6 +55,16 @@ class m191117_062825_sitemanager extends Migration
             'value' => 'New site',
             'domain_id' => null,
             'language_id' => null
+        ],
+        'home_page_type' => [
+            'value' => 0,
+            'domain_id' => null,
+            'language_id' => null
+        ],
+        'home_page' => [
+            'value' => 1,
+            'domain_id' => null,
+            'language_id' => null
         ]
     ];
     
