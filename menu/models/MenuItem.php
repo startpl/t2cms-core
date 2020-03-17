@@ -10,14 +10,16 @@ use creocoder\nestedsets\NestedSetsBehavior;
  *
  * @property int $id
  * @property int $type
+ * @property string $name
  * @property string $data
  * @property int $tree
  * @property int $lft
  * @property int $rgt
  * @property int $depth
  * @property int|null $parent_id
- *
- * @property Menu $tree0
+ * @property boolean $status
+ * 
+ * @property Menu $menu
  */
 class MenuItem extends \yii\db\ActiveRecord
 {
@@ -43,10 +45,10 @@ class MenuItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type'], 'required'],
-            [['type', 'tree', 'lft', 'rgt', 'depth', 'parent_id', 'active'], 'integer'],
-            [['data'], 'string', 'max' => 255],
-            [['active'], 'default', 'value' => true],
+            [['type', 'name'], 'required'],
+            [['type', 'tree', 'lft', 'rgt', 'depth', 'parent_id', 'status'], 'integer'],
+            [['data', 'name'], 'string', 'max' => 255],
+            [['status'], 'default', 'value' => true],
             [['tree'], 'exist', 'skipOnError' => true, 'targetClass' => Menu::className(), 'targetAttribute' => ['tree' => 'id']],
         ];
     }
@@ -55,10 +57,7 @@ class MenuItem extends \yii\db\ActiveRecord
         return [
             'tree' => [
                 'class' => NestedSetsBehavior::className(),
-                // 'treeAttribute' => 'tree',
-                // 'leftAttribute' => 'lft',
-                // 'rightAttribute' => 'rgt',
-                // 'depthAttribute' => 'depth',
+                 'treeAttribute' => 'tree',
             ],
         ];
     }
@@ -89,6 +88,7 @@ class MenuItem extends \yii\db\ActiveRecord
             'rgt' => Yii::t('menu', 'Rgt'),
             'depth' => Yii::t('menu', 'Depth'),
             'parent_id' => Yii::t('menu', 'Parent ID'),
+            'status'    => Yii::t('menu', 'Status')
         ];
     }
 

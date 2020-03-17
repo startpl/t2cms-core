@@ -22,7 +22,7 @@ class MenuRepository
     
     public function get(int $id): ActiveRecord
     {
-        if(!$model = Menu::find($id)){
+        if(!$model = Menu::findOne($id)){
             throw new \DomainException("Menu with id: {$id} was not found");
         }
         
@@ -36,6 +36,11 @@ class MenuRepository
         }
         
         return true;
+    }
+    
+    public function delete(Menu $model): bool
+    {
+        return $model->delete();
     }
     
 }

@@ -56,4 +56,22 @@ class MenuItemRepository
         
         return true;
     }
+    
+    public function getRoot(int $id): ?MenuItem
+    {
+        $model = MenuItem::find()
+                ->where(['tree' => $id, 'type' => MenuItem::TYPE_ROOT])
+                ->one();
+        
+        if(!$model){
+            throw new \DomainException("The Root for Menu with id: {$id} not found");
+        }
+        
+        return $model;
+    }
+    
+    public function delete(MenuItem $model): bool
+    {
+        return $model->isRoot() ? $model->deleteWithChildren() : $model->delete();
+    }
 }

@@ -32,6 +32,18 @@ class m191117_062825_sitemanager extends Migration
             'required' => true,
             'autoload' => true,
             'status'   => self::STATUS['MAIN']
+        ],
+        [
+            'name' => 'home_page_type',
+            'required' => true,
+            'autoload' => false,
+            'status' => self::STATUS['GENERAL']
+        ],
+        [
+            'name' => 'home_page',
+            'required' => true,
+            'autoload' => false,
+            'status' => self::STATUS['GENERAL']
         ]
     ];
     

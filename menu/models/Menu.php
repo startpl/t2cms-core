@@ -30,7 +30,10 @@ class Menu extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'title'], 'required'],
+            ['name', 'filter', 'filter'=>'strtolower'],
+            ['name', 'match', 'pattern' => '/^[a-z0-9\_]+$/i'],
             [['name', 'title'], 'string', 'max' => 120],
+            ['name', 'unique', 'message' => 'The Menu with that name already exists.'],
         ];
     }
 

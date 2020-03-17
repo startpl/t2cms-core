@@ -24,7 +24,7 @@ class MenuItemForm extends Model
         return [
             [['name'], 'required'],
             [['data'], 'string', 'max' => 255],
-            [['type'], 'default', 'value' => \t2cms\menu\MenuItems::TYPE_URI]
+            [['type'], 'default', 'value' => \t2cms\menu\models\MenuItem::TYPE_URI]
         ];
     }
 }
