@@ -16,6 +16,9 @@ class MenuItemForm extends Model
     
     public $data;
 
+    public $status;
+    public $target;
+    
     /**
      * {@inheritdoc}
      */
@@ -23,6 +26,7 @@ class MenuItemForm extends Model
     {
         return [
             [['name'], 'required'],
+            [['status', 'target'], 'boolean'],
             [['data'], 'string', 'max' => 255],
             [['type'], 'default', 'value' => \t2cms\menu\models\MenuItem::TYPE_URI]
         ];

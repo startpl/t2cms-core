@@ -31,6 +31,9 @@ class MenuItem extends \yii\db\ActiveRecord
     
     const OFFSET_ROOT = 1;
     
+    const TARGET_CURRENT = 0;
+    const TARGET_NEW_WIN = 1;
+    
     /**
      * {@inheritdoc}
      */
@@ -46,9 +49,12 @@ class MenuItem extends \yii\db\ActiveRecord
     {
         return [
             [['type', 'name'], 'required'],
-            [['type', 'tree', 'lft', 'rgt', 'depth', 'parent_id', 'status'], 'integer'],
+            [['type', 'tree', 'lft', 'rgt', 'depth', 'parent_id'], 'integer'],
+            [['status', 'target'], 'boolean'],
             [['data', 'name'], 'string', 'max' => 255],
             [['status'], 'default', 'value' => true],
+            [['target'], 'default', 'value' => self::TARGET_CURRENT],
+            
             [['tree'], 'exist', 'skipOnError' => true, 'targetClass' => Menu::className(), 'targetAttribute' => ['tree' => 'id']],
         ];
     }
@@ -100,5 +106,34 @@ class MenuItem extends \yii\db\ActiveRecord
     public function getMenu()
     {
         return $this->hasOne(Menu::className(), ['id' => 'tree']);
+    }
+    
+    public static function getItemTypes(): array
+    {
+        return [
+            self::TYPE_URI => \Yii::t('menu', 'URI'),
+            self::TYPE_BLOG_CATEGORY => \Yii::t('menu', 'Category'),
+            self::TYPE_BLOG_PAGE => \Yii::t('menu', 'Page'),
+        ];
+    }
+    
+    /**
+     * Get a full tree as a list, except the node and its children
+     * @param  integer $node_id node's ID
+     * @return array array of node
+     */
+    public static function getTree(int $tree, $domain_id = null, $language_id = null)
+    {   
+        $rows = self::find()
+                ->select(['id','tree', 'depth', 'lft', 'name'])
+                ->andWhere(['NOT IN', 'id', $tree])
+                ->orderBy('tree, lft')
+                ->all();
+        
+        $return = [];
+        foreach ($rows as $row)
+            $return[$row->id] = str_repeat('-', $row->depth - self::OFFSET_ROOT) . ' ' . $row->name;
+
+        return $return;
     }
 }

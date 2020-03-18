@@ -8,7 +8,7 @@
 
 namespace t2cms\menu\useCases;
 
-use t2cms\menu\models\forms\MenuForm;
+use t2cms\menu\models\forms\MenuItemForm;
 use t2cms\menu\models\MenuItem;
 
 /**
@@ -40,9 +40,27 @@ class MenuItemService
         return $models;
     }
     
-    public function create(MenuForm $form): ?Menu
+    public function create(MenuItemForm $form): ?MenuItem
     {
-        return new Menu();
+        $menuItem = new MenuItem([
+            'name'      => $form->name,
+            'type'      => $form->type,
+            'data'      => $form->data,
+            'parent_id' => $form->parent_id,
+            'status'    => $form->status,
+            'target'    => $form->target
+        ]);
+        
+        $transaction = \Yii::$app->db->beginTransaction();
+        try{
+            $this->menuItemRepository->save($menuItem);
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            return null;
+        }
+        
+        return $menuItem;
     }
     
     public function update(MenuItem $model): bool

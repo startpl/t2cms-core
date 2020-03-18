@@ -28,7 +28,8 @@ class m200317_065550_menu extends Migration
             'tree'      => $this->integer()->notNull(),
             'depth'     => $this->integer()->notNull(),
             'parent_id' => $this->integer(),
-            'status'    => $this->boolean()->notNull()
+            'status'    => $this->boolean()->notNull(),
+            'target'    => $this->boolean()->notNull()
         ]);
         
         $this->addForeignKey('fk-menu_item-tree', '{{%menu_item}}', 'tree', '{{%menu}}', 'id', 'CASCADE');

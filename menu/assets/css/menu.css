@@ -1,0 +1,14 @@
+.panel_wrapper{
+    margin-top:20px;
+}
+.menu-item-form .tab-content{
+    padding:10px 5px;
+    border:1px solid #ddd;
+}
+.menu-item-form .tab-content ul{
+    padding-left:20px;
+    margin-bottom:0;
+}
+.menu-item-form .tab-content a{
+    cursor:pointer;
+}

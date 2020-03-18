@@ -121,7 +121,7 @@ class DefaultController extends Controller
             'allModels' => $this->menuItemService->getItemsByMenuId($model->id)
         ]);
         
-        return $this->render('items', ['model' => $model, 'dataProvider' => $items]);
+        return $this->render('items', ['model' => $model, 'dataProvider' => $items, 'id' => $id]);
     }
     
     private function findModel(int $id)
