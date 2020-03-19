@@ -48,10 +48,10 @@ class MenuItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'name'], 'required'],
+            [['type'], 'required'],
             [['type', 'tree', 'lft', 'rgt', 'depth', 'parent_id'], 'integer'],
             [['status', 'target'], 'boolean'],
-            [['data', 'name'], 'string', 'max' => 255],
+            [['data'], 'string', 'max' => 255],
             [['status'], 'default', 'value' => true],
             [['target'], 'default', 'value' => self::TARGET_CURRENT],
             
@@ -122,18 +122,37 @@ class MenuItem extends \yii\db\ActiveRecord
      * @param  integer $node_id node's ID
      * @return array array of node
      */
-    public static function getTree(int $tree, $domain_id = null, $language_id = null)
+    public static function getTree(int $tree, $exclude, $domain_id = null, $language_id = null)
     {   
+        // don't include children and the node
+        $children = [];
+
+        if(!empty($exclude)){
+            $children = array_merge(
+                self::findOne($exclude)->children()->column(),
+                [$exclude]
+            );
+        }
+        
         $rows = self::find()
-                ->select(['id','tree', 'depth', 'lft', 'name'])
+                ->select(['id','tree', 'depth', 'lft'])
                 ->andWhere(['NOT IN', 'id', $tree])
+                ->andWhere(['NOT IN', 'id', $children])
                 ->orderBy('tree, lft')
                 ->all();
         
         $return = [];
         foreach ($rows as $row)
-            $return[$row->id] = str_repeat('-', $row->depth - self::OFFSET_ROOT) . ' ' . $row->name;
+            $return[$row->id] = str_repeat('-', $row->depth - self::OFFSET_ROOT) . ' ';// . $row->name;
 
         return $return;
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getItemContent()
+    {
+        return $this->hasOne(MenuItemContent::className(), ['menu_item_id' => 'id']);
     }
 }

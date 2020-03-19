@@ -82,12 +82,12 @@ $this->registerJsVar('model', $model);
                         </div>
                         <?php $form = ActiveForm::begin(); ?>
 
-                            <?= $form->field($model, 'name') ?>
+                            <?= $form->field($model->itemContent, 'name') ?>
                             <?= $form->field($model, 'type')->hiddenInput()->label(false)?>
                             <?= $form->field($model, 'data')->hiddenInput()->label(false)?>
 
                             <?= $form->field($model, 'parent_id')->dropDownList(
-                                MenuItem::getTree($menuId, Domains::getEditorDomainId(), Languages::getEditorLangaugeId()), 
+                                MenuItem::getTree($menuId, $itemId, Domains::getEditorDomainId(), Languages::getEditorLangaugeId()), 
                                 ['prompt' => Yii::t('menu','No Parent'), 'class' => 'form-control']
                             )?>
                         

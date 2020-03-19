@@ -8,8 +8,12 @@
 
 namespace t2cms\menu\useCases;
 
-use t2cms\menu\models\forms\MenuItemForm;
-use t2cms\menu\models\MenuItem;
+use t2cms\menu\models\{
+    forms\MenuItemForm,
+    MenuItem,
+    MenuItemContent,
+    MenuItemContentQuery
+};
 
 /**
  * Description of menuService
@@ -28,11 +32,11 @@ class MenuItemService
         $this->menuItemRepository = $menuItemRepository;
     }
     
-    public function getItemsByMenuId(int $id): ?array
+    public function getItemsByMenuId(int $id, $domain_id = null, $language_id = null): ?array
     {
         try{
             $menuRoot = $this->menuItemRepository->getRoot($id);
-            $models   = $menuRoot->children()->all();            
+            $models   = $this->menuItemRepository->getItemsByMenu($menuRoot, $domain_id, $language_id);
         } catch(\Exception $e) {
             return null;
         }
@@ -40,9 +44,9 @@ class MenuItemService
         return $models;
     }
     
-    public function create(MenuItemForm $form): ?MenuItem
+    public function create(MenuItemForm $form, int $id): ?MenuItem
     {
-        $menuItem = new MenuItem([
+        $model = new MenuItem([
             'name'      => $form->name,
             'type'      => $form->type,
             'data'      => $form->data,
@@ -51,23 +55,39 @@ class MenuItemService
             'target'    => $form->target
         ]);
         
+        if(empty($model->parent_id)){
+            $menu = $this->menuItemRepository->getRoot($id);
+            $model->parent_id = $menu->id;
+        }
+                
         $transaction = \Yii::$app->db->beginTransaction();
         try{
-            $this->menuItemRepository->save($menuItem);
+            $this->menuItemRepository->appendTo($model);
             $transaction->commit();
-        } catch (\Exception $e) {
+        } catch (\Exception $e) {            
             $transaction->rollBack();
             return null;
         }
         
-        return $menuItem;
+        return $model;
     }
     
-    public function update(MenuItem $model): bool
+    public function update(MenuItem $model, $domain_id = null, $language_id = null): bool
     {
         $transaction = \Yii::$app->db->beginTransaction();
         try{
-            $this->menuItemRepository->save($model);
+            if($model->getDirtyAttributes(['parent_id']) && ($model->id != $model->parent_id)){
+                if(empty($model->parent_id)){
+                    $menu = $this->menuItemRepository->getRoot($model->tree);
+                    $model->parent_id = $menu->id;
+                }
+                $this->menuItemRepository->appendTo($model);
+            }
+            else{
+                $this->menuItemRepository->save($model);
+            }
+            
+            $this->menuItemRepository->saveContent($model->menuItemContent, $domain_id, $language_id);
             $transaction->commit();
         } catch (\Exception $e) {
             $transaction->rollBack();

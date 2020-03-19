@@ -14,6 +14,10 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use t2cms\menu\useCases\MenuItemService;
 use t2cms\menu\repository\MenuItemRepository;
+use t2cms\sitemanager\components\{
+    Domains,
+    Languages
+};
 
 
 class ItemController extends Controller
@@ -54,24 +58,24 @@ class ItemController extends Controller
      * Lists all Setting models.
      * @return mixed
      */
-    public function actionIndex($id)
+    public function actionIndex()
     {
         $this->redirect(['/menu']);
     }
     
-    public function actionCreate($id)
-    {
+    public function actionCreate($menuId)
+    {        
         $form = new \t2cms\menu\models\forms\MenuItemForm();
         
         if($form->load(\Yii::$app->request->post()) && $form->validate()){
-            if($model = $this->menuItemService->create($form)){
+            if($model = $this->menuItemService->create($form, $menuId)){
                 \Yii::$app->session->setFlash('success', \Yii::t('menu', 'Success create'));
                 return $this->redirect(['update', 'id' => $model->id]);
             } else {
                 \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error create'));
             }
         }
-        else if(Yii::$app->request->post() && !$model->validate()){
+        else if(Yii::$app->request->post() && !$form->validate()){
             \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error create'));
         }
         
@@ -79,7 +83,7 @@ class ItemController extends Controller
         $categories = \startpl\t2cmsblog\helpers\CategoryHelper::getAll();
         
         return $this->render('create',[
-            'menuId'  => $id,
+            'menuId'  => $menuId,
             'model' => $form,
             'pages' => $pages,
             'categories' => $categories
@@ -87,8 +91,33 @@ class ItemController extends Controller
     }
     
     public function actionUpdate($id)
-    {        
+    {                
+        $domain_id   = Domains::getEditorDomainId();
+        $language_id = Languages::getEditorLangaugeId();
         
+        $model = $this->findModel($id, $domain_id, $language_id);
+        
+        if($model->load(\Yii::$app->request->post()) && $model->validate()){
+            if($model = $this->menuItemService->update($model, $id, $domain_id, $language_id)){
+                \Yii::$app->session->setFlash('success', \Yii::t('menu', 'Success save'));
+                return $this->refresh();
+            } else {
+                \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error save'));
+            }
+        }
+        else if(Yii::$app->request->post() && !$model->validate()){
+            \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error save'));
+        }
+        
+        $pages = \startpl\t2cmsblog\helpers\PageHelper::getAll();
+        $categories = \startpl\t2cmsblog\helpers\CategoryHelper::getAll();
+        
+        return $this->render('update',[
+            'menuId'  => $model->tree,
+            'model' => $model,
+            'pages' => $pages,
+            'categories' => $categories
+        ]);
     }
     
     public function actionDelete($id)
@@ -96,10 +125,10 @@ class ItemController extends Controller
        
     }
     
-    private function findModel(int $id)
+    private function findModel(int $id, $domain_id = null, $language_id = null)
     {
         try{
-            $model = $this->menuRepository->get($id);
+            $model = $this->menuItemRepository->get($id, $domain_id, $language_id);
         } catch (\Exception $e){
             throw new NotFoundHttpException("The menu with id: {$id} not found");
         }

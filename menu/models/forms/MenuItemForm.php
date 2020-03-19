@@ -9,8 +9,6 @@ use yii\base\Model;
  */
 class MenuItemForm extends Model
 {
-    public $name;
-    
     public $type;
     public $parent_id;
     
@@ -19,13 +17,20 @@ class MenuItemForm extends Model
     public $status;
     public $target;
     
+    public $itemContent;
+    
+    public function __construct($config = array()) {
+        parent::__construct($config);
+        
+        $this->itemContent = new MenuItemContentForm();
+    }
+    
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['name'], 'required'],
             [['status', 'target'], 'boolean'],
             [['data'], 'string', 'max' => 255],
             [['type'], 'default', 'value' => \t2cms\menu\models\MenuItem::TYPE_URI]

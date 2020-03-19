@@ -12,6 +12,10 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use t2cms\sitemanager\components\{
+    Domains,
+    Languages
+};
 
 class DefaultController extends Controller
 {
@@ -86,7 +90,7 @@ class DefaultController extends Controller
     }
     
     public function actionUpdate($id)
-    {        
+    {
         $model = $this->findModel($id);
         
         if($model->load(\Yii::$app->request->post()) && $model->validate()){
@@ -96,7 +100,7 @@ class DefaultController extends Controller
             } else {
                 \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error update'));
             }
-        } 
+        }
         
         return $this->render('update', ['model' => $model]);
     }
@@ -116,9 +120,13 @@ class DefaultController extends Controller
     
     public function actionItems($id)
     {
+        $domain_id   = Domains::getEditorDomainId();
+        $language_id = Languages::getEditorLangaugeId();
+        
         $model = $this->findModel($id);
+                
         $items = new \yii\data\ArrayDataProvider([
-            'allModels' => $this->menuItemService->getItemsByMenuId($model->id)
+            'allModels' => $this->menuItemService->getItemsByMenuId($model->id, $domain_id, $language_id)
         ]);
         
         return $this->render('items', ['model' => $model, 'dataProvider' => $items, 'id' => $id]);
