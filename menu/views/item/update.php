@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Domain */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('menu', 'Menu'), 'url' => ['/menu/items', 'id' => $menuId]];
+$this->title = $model->itemContent->name;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('menu', 'Menu'), 'url' => ['/menu/default/items', 'id' => $menuId]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="menu-update">

@@ -67,7 +67,12 @@ class ItemController extends Controller
     {        
         $form = new \t2cms\menu\models\forms\MenuItemForm();
         
-        if($form->load(\Yii::$app->request->post()) && $form->validate()){
+        if(
+            $form->load(\Yii::$app->request->post()) 
+            && $form->validate()
+            && $form->itemContent->load(\Yii::$app->request->post()) 
+            && $form->itemContent->validate()
+        ){
             if($model = $this->menuItemService->create($form, $menuId)){
                 \Yii::$app->session->setFlash('success', \Yii::t('menu', 'Success create'));
                 return $this->redirect(['update', 'id' => $model->id]);
@@ -75,7 +80,7 @@ class ItemController extends Controller
                 \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error create'));
             }
         }
-        else if(Yii::$app->request->post() && !$form->validate()){
+        else if(Yii::$app->request->post() && (!$model->validate() || !$model->itemContent->validate())){
             \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error create'));
         }
         
@@ -97,15 +102,20 @@ class ItemController extends Controller
         
         $model = $this->findModel($id, $domain_id, $language_id);
         
-        if($model->load(\Yii::$app->request->post()) && $model->validate()){
-            if($model = $this->menuItemService->update($model, $id, $domain_id, $language_id)){
+        if(
+            $model->load(\Yii::$app->request->post())
+            && $model->validate()
+            && $model->itemContent->load(\Yii::$app->request->post()) 
+            && $model->itemContent->validate()
+        ){
+            if($this->menuItemService->update($model, $domain_id, $language_id)){
                 \Yii::$app->session->setFlash('success', \Yii::t('menu', 'Success save'));
                 return $this->refresh();
             } else {
                 \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error save'));
             }
         }
-        else if(Yii::$app->request->post() && !$model->validate()){
+        else if(Yii::$app->request->post() && (!$model->validate() || !$model->itemContent->validate())){
             \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error save'));
         }
         

@@ -16,11 +16,24 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="menu-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    
+    <div class="section-justify">
+        <p>
+            <?= Html::a(Yii::t('menu', 'Create Item'), ['/menu/item/create', 'menuId' => $id], ['class' => 'btn btn-success']) ?>
+        </p>
 
-    <p>
-        <?= Html::a(Yii::t('menu', 'Create Item'), ['/menu/item/create', 'menuId' => $id], ['class' => 'btn btn-success']) ?>
-    </p>
-
+        <div class="section-right">
+                <div class="zone-section">
+                    <div class="domain-change">
+                        <?= t2cms\sitemanager\widgets\local\DomainList::widget();?>
+                    </div>
+                    <div class="language-change">
+                        <?= t2cms\sitemanager\widgets\local\LanguageList::widget();?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <?php Pjax::begin(); ?>
     
     <?= GridView::widget([
@@ -36,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
                 'value' => function($model, $key, $index){
                     $anchor = str_repeat('-', $model->depth - MenuItem::OFFSET_ROOT) . ' ' . $model->itemContent->name;
-                    return \yii\helpers\Html::a($anchor, ['items', 'id' => $model->id]);
+                    return \yii\helpers\Html::a($anchor, ['/menu/item/update', 'id' => $model->id]);
                 }
             ],
             [

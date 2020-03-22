@@ -29,7 +29,7 @@ class MenuItemContent extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'menu_item_id', 'name', 'domain_id', 'language_id'], 'required'],
+            [['menu_item_id', 'name'], 'required'],
             [['id', 'menu_item_id', 'domain_id', 'language_id'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['id'], 'unique'],
@@ -57,5 +57,13 @@ class MenuItemContent extends \yii\db\ActiveRecord
     public static function find()
     {
         return new MenuItemContentQuery(get_called_class());
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getItem()
+    {
+        return $this->hasOne(MenuItem::className(), ['id' => 'menu_item_id']);
     }
 }

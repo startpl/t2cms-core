@@ -42,7 +42,6 @@ class MenuService
         ]);
         
         $menuRoot = new MenuItem([
-            'name' => $form->name,
             'type' => MenuItem::TYPE_ROOT
         ]);
         

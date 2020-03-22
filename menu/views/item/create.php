@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\Domain */
 
 $this->title = Yii::t('menu', 'Create Item of Menu');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('menu', 'Items'), 'url' => ['/menu/items', 'id' => $menuId]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('menu', 'Items'), 'url' => ['/menu/default/items', 'id' => $menuId]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="menu-item-create">

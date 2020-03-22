@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use t2cms\menu\models\MenuItem;
+use yii\helpers\ArrayHelper;
 use t2cms\sitemanager\components\{
     Domains,
     Languages
@@ -13,7 +14,11 @@ $this->registerJsVar('itemTypes', \t2cms\menu\models\MenuItem::getItemTypes());
 t2cms\menu\AssetBundle::register($this);
 
 $this->registerJsVar('modelDefaultType', MenuItem::TYPE_BLOG_PAGE);
-$this->registerJsVar('model', $model);
+
+$jsModel = ArrayHelper::toArray($model);
+$jsModel['name'] = $model->itemContent->name;
+
+$this->registerJsVar('model', $jsModel);
 ?>
 <div class="menu-item-form">
     <ul class="nav nav-tabs">
@@ -26,6 +31,16 @@ $this->registerJsVar('model', $model);
         <li class="nav-item" data-type="<?= MenuItem::TYPE_URI?>">
             <a class="nav-link" data-toggle="tab" href="#uri"><?=\Yii::t('menu', 'Link')?></a>
         </li>
+        <div class="section-right">
+            <div class="zone-section">
+                <div class="domain-change">
+                    <?= t2cms\sitemanager\widgets\local\DomainList::widget();?>
+                </div>
+                <div class="language-change">
+                    <?= t2cms\sitemanager\widgets\local\LanguageList::widget();?>
+                </div>
+            </div>
+        </div>
     </ul>
     <div class="row panel_wrapper">
         <div class="col-md-3">
@@ -55,7 +70,10 @@ $this->registerJsVar('model', $model);
                         <?=Html::input('text', 'uri', null, [
                             'id' => 'menuitemform-uri',
                             'class' => 'form-control',
-                            'placeholder' => 'uri'
+                            'placeholder' => 'uri',
+                            'data' => [
+                                'type' => MenuItem::TYPE_URI
+                            ]
                         ])?>
 
                         <div class="help-block"></div>
@@ -72,19 +90,34 @@ $this->registerJsVar('model', $model);
                     <div class="active-form">
                         <div class="item-info">
                             <div>
-                                <span>ID</span>
+                                <span>ID:</span>
                                 <span id="info-id"></span>
                             </div>
                             <div>
-                                <span><?=\Yii::t('menu', 'Type')?></span>
+                                <span><?=\Yii::t('menu', 'Type')?>:</span>
                                 <span id="info-type"><?=\Yii::t('menu', 'Page')?></span>
                             </div>
                         </div>
                         <?php $form = ActiveForm::begin(); ?>
-
-                            <?= $form->field($model->itemContent, 'name') ?>
-                            <?= $form->field($model, 'type')->hiddenInput()->label(false)?>
-                            <?= $form->field($model, 'data')->hiddenInput()->label(false)?>
+                        
+                            <?= $form->field($model->itemContent, 'name', [
+                                'inputOptions' => [
+                                    'id' => 'menuitemcontent-name',
+                                    'class' => 'form-control'
+                                ]
+                            ]) ?>
+                        
+                            <?= $form->field($model, 'type', [
+                                'inputOptions' => [
+                                    'id' => 'menuitem-type'
+                                ]
+                            ])->hiddenInput()->label(false)?>
+                        
+                            <?= $form->field($model, 'data', [
+                                'inputOptions' => [
+                                    'id' => 'menuitem-data'
+                                ]
+                            ])->hiddenInput()->label(false)?>
 
                             <?= $form->field($model, 'parent_id')->dropDownList(
                                 MenuItem::getTree($menuId, $itemId, Domains::getEditorDomainId(), Languages::getEditorLangaugeId()), 

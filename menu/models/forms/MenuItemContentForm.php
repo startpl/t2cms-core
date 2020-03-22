@@ -18,9 +18,7 @@ class MenuItemContentForm extends Model
     {
         return [
             [['name',], 'required'],
-            ['name', 'filter', 'filter'=>'strtolower'],
-            ['name', 'match', 'pattern' => '/^[a-z0-9\_]+$/i'],
-            [['name'], 'string', 'max' => 120]
+            [['name'], 'string', 'max' => 255]
         ];
     }
 }

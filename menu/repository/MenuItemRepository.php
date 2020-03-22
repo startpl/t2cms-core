@@ -54,10 +54,14 @@ class MenuItemRepository
     
     public function getItemsByMenu(MenuItem $menu, $domain_id = null, $language_id = null): ?array
     {        
-        if($menu){        
+        if($menu){
             return $menu->children()
                 ->joinWith(['itemContent' => function($query) use ($domain_id, $language_id){
-                    $in = ArrayHelper::getColumn(MenuItemContentQuery::getAllId($domain_id, $language_id)->asArray()->all(), 'id');
+                    $in = ArrayHelper::getColumn(
+                        MenuItemContentQuery::getAllId($domain_id, $language_id)
+                        ->asArray()
+                        ->all()
+                    , 'id');
                     $query->andWhere(['IN','menu_item_content.id', $in]);
                 }])
                 ->orderBy('lft')
@@ -126,12 +130,18 @@ class MenuItemRepository
     
     private function copyCategoryContent(\yii\db\ActiveRecord $model, $domain_id, $language_id)
     {
-        $newContent = new MenuItemContent();
-        $newContent->attributes = $model->attributes;
-        
-        $newContent->domain_id   = $domain_id;
-        $newContent->language_id = $language_id;
+        $newContent = new MenuItemContent([
+            'name'         => $model->name,
+            'menu_item_id' => $model->menu_item_id,
+            'domain_id'    => $domain_id,
+            'language_id'  => $language_id
+        ]);
         
         return $this->save($newContent);
+    }
+    
+    public function link(string $name, $target, $model): void
+    {
+        $model->link($name, $target);
     }
 }

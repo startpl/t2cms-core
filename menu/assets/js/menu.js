@@ -1,33 +1,63 @@
 $(document).ready(function(){
     
     $('.menu-list-type a').click(function(){
-        changeItemMenu($(this));
-    }); 
+        const data     = $(this).data('id');
+        const type   = $(this).data('type');
+        const anchor = $(this).text();
+        
+        $('.menu-list-type > .active').removeClass('active');
+        $(this).parent().addClass('active');
+        
+        changeItemMenu(data, type, anchor);
+    });
+    
+    $('#menuitemform-uri').change(function(){
+        const data     = $(this).val();
+        const type   = $(this).data('type');
+        
+        changeItemMenu(data, type, false);
+    });
     
     configurateForm();
 });
 
-function changeItemMenu(link){
-    const id     = link.data('id');
-    const type   = link.data('type');
-    const anchor = link.text();
-    
-    $('#info-id').text(id);
+function changeItemMenu(data, type, anchor){    
+    $('#info-id').text(data);
     $('#info-type').text(itemTypes[type]);
     
-    $('#menuitemform-type').val(type);
-    $('#menuitemform-data').val(id);
-    $('#menuitemform-name').val(anchor);
+    $('#menuitem-type').val(type);
+    $('#menuitem-data').val(data);
+    $('#menuitemcontent-name').val(anchor);
+}
+
+function activateItemMenu(data, type, anchor){
+    
 }
 
 function configurateForm(){
-    const type = model.type === null? modelDefaultType : model.type;
+    let type = model.type === null? modelDefaultType : model.type;
         
     $('.menu-item-form .nav-item[data-type="'+type+'"]').addClass('active');
     
     const tabPane = $('.menu-item-form .tab-pane[data-type="'+type+'"]');
     tabPane.addClass(['in', 'active']);
     
-    const defaultItem = tabPane.find('a').eq(0);
-    changeItemMenu(defaultItem);
+    if(model.type === null){
+        let {data, type, anchor} = defaultConfig();
+    } else {
+        let data   = model.data;
+        let anchor = model.itemContent.name;
+    }
+    activateItemMenu(data, type, anchor);
+    changeItemMenu(data, type, anchor);
+}
+
+function defaultConfig(){
+    const defaultItem = $('.menu-item-form .tab-pane.active').find('a').eq(0);
+
+    return {
+        data: defaultItem.data('id'),
+        type: defaultItem.data('type'),
+        anchor: defaultItem.text()
+    };
 }

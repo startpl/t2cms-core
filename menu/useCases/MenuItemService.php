@@ -47,12 +47,15 @@ class MenuItemService
     public function create(MenuItemForm $form, int $id): ?MenuItem
     {
         $model = new MenuItem([
-            'name'      => $form->name,
             'type'      => $form->type,
             'data'      => $form->data,
             'parent_id' => $form->parent_id,
             'status'    => $form->status,
             'target'    => $form->target
+        ]);
+        
+        $itemContent = new MenuItemContent([
+            'name' => $form->itemContent->name
         ]);
         
         if(empty($model->parent_id)){
@@ -63,6 +66,7 @@ class MenuItemService
         $transaction = \Yii::$app->db->beginTransaction();
         try{
             $this->menuItemRepository->appendTo($model);
+            $this->menuItemRepository->link('item', $model, $itemContent);
             $transaction->commit();
         } catch (\Exception $e) {            
             $transaction->rollBack();
@@ -86,8 +90,7 @@ class MenuItemService
             else{
                 $this->menuItemRepository->save($model);
             }
-            
-            $this->menuItemRepository->saveContent($model->menuItemContent, $domain_id, $language_id);
+            $this->menuItemRepository->saveContent($model->itemContent, $domain_id, $language_id);
             $transaction->commit();
         } catch (\Exception $e) {
             $transaction->rollBack();
