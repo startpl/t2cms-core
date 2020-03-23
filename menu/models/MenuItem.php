@@ -10,7 +10,6 @@ use creocoder\nestedsets\NestedSetsBehavior;
  *
  * @property int $id
  * @property int $type
- * @property string $name
  * @property string $data
  * @property int $tree
  * @property int $lft
@@ -134,17 +133,22 @@ class MenuItem extends \yii\db\ActiveRecord
             );
         }
         
-        $rows = self::find()
-                ->select(['id','tree', 'depth', 'lft'])
-                ->andWhere(['NOT IN', 'id', $tree])
-                ->andWhere(['NOT IN', 'id', $children])
-                ->orderBy('tree, lft')
-                ->all();
+        $rows = MenuItem::find()
+            ->joinWith(['itemContent' => function($query) use ($domain_id, $language_id){
+                $in = \yii\helpers\ArrayHelper::getColumn(MenuItemContentQuery::getAllId($domain_id, $language_id)->asArray()->all(), 'id');
+                $query->andWhere(['IN','menu_item_content.id', $in]);
+            }])
+            ->select(['menu_item.id', 'tree', 'depth', 'lft', 'menu_item_content.name'])
+            ->andWhere(['NOT IN', 'menu_item.id', $tree])
+            ->andWhere(['NOT IN', 'menu_item.id', $children])
+            ->orderBy('tree, lft')
+            ->all();
         
         $return = [];
+        
         foreach ($rows as $row)
-            $return[$row->id] = str_repeat('-', $row->depth - self::OFFSET_ROOT) . ' ';// . $row->name;
-
+            $return[$row->id] = str_repeat(' - ', $row->depth - self::OFFSET_ROOT) . ' ' . $row->itemContent->name;
+        
         return $return;
     }
     

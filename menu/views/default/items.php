@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Name',
                 'format' => 'html',
                 'value' => function($model, $key, $index){
-                    $anchor = str_repeat('-', $model->depth - MenuItem::OFFSET_ROOT) . ' ' . $model->itemContent->name;
+                    $anchor = str_repeat(' - ', $model->depth - MenuItem::OFFSET_ROOT) . ' ' . $model->itemContent->name;
                     return \yii\helpers\Html::a($anchor, ['/menu/item/update', 'id' => $model->id]);
                 }
             ],
@@ -62,8 +62,16 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'data',
                 'label' => 'URI',
+                'format' => 'raw',
                 'value' => function($model, $key, $index){
-                    return $model->data;
+                    $url = \t2cms\menu\helpers\MenuUrl::to($model, true);
+                    $anchor = [
+                        $url, 
+                        rmrevin\yii\fontawesome\FontAwesome::i('external-link')
+                    ];
+                    return Html::a(implode(' ', $anchor), $url, [
+                        'target' => '_blank'
+                    ]);
                 }
             ],
             [

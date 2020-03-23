@@ -124,8 +124,12 @@ $this->registerJsVar('model', $jsModel);
                                 ['prompt' => Yii::t('menu','No Parent'), 'class' => 'form-control']
                             )?>
                         
-                            <?= $form->field($model, 'status')->checkbox()?>
-                            <?= $form->field($model, 'target')->checkbox()?>
+                            <?= $form->field($model, 'status')->checkbox([
+                                'label' => \Yii::t('menu', 'Active')
+                            ])?>
+                            <?= $form->field($model, 'target')->checkbox([
+                                'label' => \Yii::t('menu', 'Open in new window?')
+                            ])?>
 
                             <div class="form-group">
                                 <?= Html::submitButton(Yii::t('menu', 'Submit'), ['class' => 'btn btn-primary']) ?>

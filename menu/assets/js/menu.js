@@ -27,15 +27,31 @@ function changeItemMenu(data, type, anchor){
     
     $('#menuitem-type').val(type);
     $('#menuitem-data').val(data);
-    $('#menuitemcontent-name').val(anchor);
+    if(anchor){
+        $('#menuitemcontent-name').val(anchor);
+    }
 }
 
-function activateItemMenu(data, type, anchor){
+function activateItemMenu(data, type){
+    $('.menu-item-form .nav-item.active').removeClass('active');
+    $('.menu-item-form .nav-item[data-type="'+type+'"]').addClass('active');
     
+    $('.menu-item-form .tab-pane.active').removeClass(['in', 'active']);
+   
+    const tanPane = $('.menu-item-form .tab-pane[data-type="'+type+'"]');
+    tanPane.addClass(['in', 'active']);
+    
+    if(type == itemTypes.indexOf('URI')){
+        $('#menuitemform-uri').val(data);
+    } else {
+        tanPane.find('a[data-id="'+data+'"]').parent().addClass('active');
+    }
 }
 
 function configurateForm(){
     let type = model.type === null? modelDefaultType : model.type;
+    
+    let data, anchor;
         
     $('.menu-item-form .nav-item[data-type="'+type+'"]').addClass('active');
     
@@ -43,12 +59,16 @@ function configurateForm(){
     tabPane.addClass(['in', 'active']);
     
     if(model.type === null){
-        let {data, type, anchor} = defaultConfig();
+        let config = defaultConfig();
+        data   = config.data;
+        type   = config.type;
+        anchor = config.anchor;
     } else {
-        let data   = model.data;
-        let anchor = model.itemContent.name;
+        data   = model.data;
+        anchor = model.name;
     }
-    activateItemMenu(data, type, anchor);
+    
+    activateItemMenu(data, type);
     changeItemMenu(data, type, anchor);
 }
 
