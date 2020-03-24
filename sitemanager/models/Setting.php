@@ -15,7 +15,12 @@ use Yii;
  */
 class Setting extends \yii\db\ActiveRecord
 {    
-    const STATUS = ['GENERAL' => 0, 'MAIN' => 1, 'CUSTOM' => 2];
+    const STATUS = [
+        'GENERAL' => 0, 
+        'MAIN'    => 1, 
+        'CUSTOM'  => 2,
+        'SYSTEM'  => 3
+    ];
     
     /**
      * {@inheritdoc}

@@ -5,7 +5,12 @@ use yii\db\Migration;
  */
 class m191117_062825_sitemanager extends Migration
 {
-    const STATUS = ['GENERAL' => 0, 'MAIN' => 1];
+    const STATUS = [
+        'GENERAL' => 0, 
+        'MAIN'    => 1, 
+        'CUSTOM'  => 2,
+        'SYSTEM'  => 3
+    ];
     
     
     private $settings = [
@@ -44,6 +49,12 @@ class m191117_062825_sitemanager extends Migration
             'required' => true,
             'autoload' => false,
             'status' => self::STATUS['GENERAL']
+        ],
+        [
+            'name' => 'design',
+            'required' => true,
+            'autoload' => true,
+            'status' => self::STATUS['SYSTEM']
         ]
     ];
     
@@ -75,6 +86,11 @@ class m191117_062825_sitemanager extends Migration
         ],
         'home_page' => [
             'value' => 1,
+            'domain_id' => null,
+            'language_id' => null
+        ],
+        'design' => [
+            'value' => 'default',
             'domain_id' => null,
             'language_id' => null
         ]
