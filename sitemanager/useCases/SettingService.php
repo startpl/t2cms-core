@@ -23,7 +23,7 @@ use \t2cms\sitemanager\models\{
  * @author Koperdog <koperdog@dev.gmail.com>
  * @version 1.0
  */
-class SettingService {
+class SettingService extends \yii\base\BaseObject{
     /**
      * @var SettingRepository repository of setting model
      */
@@ -135,6 +135,22 @@ class SettingService {
             return false;
         }
         
+        return true;
+    }
+    
+    public function set(string $name, string $value, $domain_id = null, $language_id = null): bool
+    {
+        $setting = $this->settingRepository->getByName($name, $domain_id, $language_id);
+        $setting->value = $value;
+        
+        try{
+            $this->settingRepository->save($setting);
+        } catch (\Exception $e){
+            return false;
+        }
+        
+        \Yii::$app->settings->flushCache();
+                
         return true;
     }
 }

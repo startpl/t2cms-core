@@ -115,7 +115,7 @@ class MenuItemRepository
     
     public function delete(MenuItem $model): bool
     {
-        return $model->isRoot() ? $model->deleteWithChildren() : $model->delete();
+        return $model->deleteWithChildren();
     }
     
     public function saveContent(MenuItemContent $model, $domain_id = null, $language_id = null): bool

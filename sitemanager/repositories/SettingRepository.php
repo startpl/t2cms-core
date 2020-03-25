@@ -50,6 +50,15 @@ class SettingRepository
         return $model;
     }
     
+    public function getByName(string $name, $domain_id = null, $language_id = null): SettingValue
+    {        
+        $model = SettingValueQuery::getByName($name, $domain_id, $language_id)
+                ->indexBy('setting.name')
+                ->one();
+        
+        return $model;
+    }
+    
     public function getAllByStatus
     (
         int $status      = Setting::STATUS['GENERAL'],

@@ -12,3 +12,6 @@
 .menu-item-form .tab-content a{
     cursor:pointer;
 }
+.menu-item-form .nav.nav-tabs{
+    text-align: right;
+}

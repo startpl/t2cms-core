@@ -64,11 +64,11 @@ class Settings extends \yii\base\Component
      * @param DomainReadRepository $domains
      * @param LanguageReadRepository $languages
      */
-    public function __construct(Domains $domains, Languages $languages, \yii\caching\FileCache $cache)
+    public function __construct(Domains $domains, Languages $languages)
     {
         parent::__construct();
         
-        $this->cache = $cache;
+        $this->cache = \Yii::$app->cache;
         
         $this->domains   = $domains;
         $this->languages = $languages;

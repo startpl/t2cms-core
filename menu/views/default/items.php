@@ -78,6 +78,26 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Actions',
                 'template' => '{update} {delete}',
+                'buttons' =>
+                    [
+                        'update' => function ($url, $model) {
+                            return Html::a(
+                                '<span class="glyphicon glyphicon-pencil"></span>', 
+                                ['/menu/item/update', 'id' => $model->id]);
+                        },
+                        'delete' => function ($url, $model) {
+                            return Html::a(
+                                '<span class="glyphicon glyphicon-trash"></span>', 
+                                ['/menu/item/delete', 'id' => $model->id],
+                                [
+                                    'data' => [
+                                        'confirm' => \Yii::t('app', 'Are you sure you want to delete this item?'),
+                                        'method'  => 'post',
+                                        'pjax'    => '0'
+                                    ]
+                                ]);
+                        }
+                    ]
             ],
         ],
     ]); ?>

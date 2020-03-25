@@ -131,7 +131,16 @@ class ItemController extends Controller
     
     public function actionDelete($id)
     {
-       //TODO
+        $model = $this->findModel($id);
+        
+        if($this->menuItemService->delete($model)){
+            \Yii::$app->session->setFlash('success', \Yii::t('menu', 'Success delete'));
+        }
+        else{
+            \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error delete'));
+        }
+        
+        return $this->redirect(['/menu/items', 'id' => $model->tree]);
     }
     
     private function findModel(int $id, $domain_id = null, $language_id = null)
