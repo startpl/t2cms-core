@@ -8,17 +8,10 @@
 
 namespace t2cms\design\controllers;
 
-use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use t2cms\design\useCases\DesignService;
 use t2cms\design\repositories\DesignRepository;
-
-use t2cms\sitemanager\components\{
-    Domains,
-    Languages
-};
 
 class DefaultController extends Controller
 {    

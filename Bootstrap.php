@@ -17,7 +17,7 @@ namespace t2cms;
 class Bootstrap implements \yii\base\BootstrapInterface
 {
     public function bootstrap($app) {
-        \Yii::setAlias('@themes', '@app/../themes');
-        \Yii::setAlias('@theme', '@themes/'.$app->settings->get(design\Theme::SETTING_NAME));
+//        \Yii::setAlias('@themes', '@app/../themes');
+//        \Yii::setAlias('@theme', '@themes/'.$app->settings->get(design\Theme::SETTING_NAME));
     }
 }
