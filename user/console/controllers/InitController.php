@@ -9,8 +9,8 @@
 namespace t2cms\user\console\controllers;
 
 use yii\console\Controller;
-use yii\helpers\Console;
-use t2cms\user\console\useCases\RoleService;
+use t2cms\user\common\useCases\RoleService;
+use t2cms\user\common\useCases\PermissionService;
 
 /**
  * Description of DefaultController
@@ -21,22 +21,43 @@ use t2cms\user\console\useCases\RoleService;
 class InitController extends Controller 
 {
     private $roleService;
+    private $permissionService;
     
-    public function __construct($id, $module, RoleService $roleService, $config = array()) {
+    public function __construct(
+        $id, 
+        $module, 
+        RoleService $roleService, 
+        PermissionService $permissionService,
+        $config = array()
+    )
+    {
         parent::__construct($id, $module, $config);
         
-        $this->roleService = $roleService;
+        $this->roleService       = $roleService;
+        $this->permissionService = $permissionService;
     }
     
     public function actionIndex()
     {
-        $roles = require __DIR__ . '/../' . 'config/roles.php';
+        $roles = \t2cms\user\common\enums\UserRoles::ROLES;
         
-        if($this->roleService->createRoles($roles)){
+        $permissions = \t2cms\user\common\enums\UserPermissions::PERMISSIONS;
+        
+        if(
+            $this->roleService->createRoles($roles)
+            && $this->permissionService->createPermissions($permissions)){
             echo 'success';
         } else {
             echo 'error';
         }
     }
     
+    public function actionMakeAdmin()
+    {
+        $userRole = \Yii::$app->authManager->getRole('admin');
+        \Yii::$app->authManager->assign($userRole, 1);
+        
+        echo 'success';
+    }
+        
 }

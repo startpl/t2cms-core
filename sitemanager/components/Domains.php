@@ -41,11 +41,15 @@ class Domains extends \yii\base\Component
     
     public function __construct(DomainService $service, DomainReadRepository $repository) {
         parent::__construct();
-        
-        $this->currentHost = \Yii::$app->getRequest()->serverName;
-        
+                    
         $this->domainService    = $service;
         $this->domainRepository = $repository;
+        
+        if(!\Yii::$app->request->isConsoleRequest){
+            $this->currentHost = \Yii::$app->getRequest()->serverName;
+        } else {
+            $this->currentHost = $this->getDefault()['name'];
+        }
         
         $this->getDomain();
     }
