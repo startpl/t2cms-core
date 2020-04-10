@@ -16,9 +16,11 @@ namespace t2cms;
  */
 class Bootstrap implements \yii\base\BootstrapInterface
 {
-    public function bootstrap($app) {
+    public function bootstrap($app) 
+    {
+        \Yii::setAlias('@modules', '@app/../cms/modules');
         if(!$app->request->isConsoleRequest){
-            \Yii::setAlias('@themes', '@app/../themes');
+            \Yii::setAlias('@themes', '@app/../cms/themes');
             \Yii::setAlias('@theme', '@themes/'.$app->settings->get(design\Theme::SETTING_NAME));
         }
     }

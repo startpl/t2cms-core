@@ -16,7 +16,7 @@ use t2cms\user\common\repositories\PermissionRepository;
  *
  * @author Koperdog <koperdog.dev@github.com>
  */
-class RoleService 
+class PermissionService 
 {
     private $permissionRepository;
     

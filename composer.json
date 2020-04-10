@@ -4,7 +4,7 @@
     "type": "yii2-extension",
     "keywords": ["cms yii2"," multisite cms"," multilanguage cms"," multidomain cms"],
     "license": "BSD-3-Clause",
-    "version": "1.0.2",
+    "version": "1.0.17",
     "authors": [
         {
             "name": "koperdog",
@@ -14,8 +14,10 @@
     ],
     "require": {
         "yiisoft/yii2": "~2.0.0",
+        "startpl/t2cms-composer": "*",
         "rmrevin/yii2-fontawesome": "~2.9",
-        "startpl/t2cms-blog": "^1.0.0"
+        "startpl/t2cms-blog": "^1.0.0",
+        "startpl/t2cms-module": "*"
     },
     "extra": {
         "bootstrap": "t2cms\\Bootstrap"
