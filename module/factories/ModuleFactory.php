@@ -22,14 +22,16 @@ abstract class ModuleFactory
         $module = new ModuleDTO();
         
         $module->path           = $config['path'];
+        $module->url            = $config['url'];
         $module->name           = $config['name'];
         $module->description    = $config['description'];
         $module->version        = $config['version'];
         $module->currentVersion = $config['currentVersion'];
         $module->author         = $config['author'];
         $module->status         = $config['status'];
-        $module->icon           = $config['icon'];
+        $module->fa_icon        = $config['fa_icon'];
         
+        $module->namespace      = $config['namespace'];
                 
         return $module;
     }

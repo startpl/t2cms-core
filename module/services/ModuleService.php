@@ -34,8 +34,12 @@ class ModuleService
     
     public function getModule(string $path): ?ModuleDTO
     {        
-        $infoFile = $this->fileRepository->getModuleInfo($path);
-        $config = $infoFile;
+        try{
+            $infoFile = $this->fileRepository->getModuleInfo($path);
+            $config = $infoFile;
+        } catch (\DomainException $e) {
+            return null;
+        }
         
         try{
             $infoDB   = $this->dbRepository->getByPath($path);
@@ -58,5 +62,80 @@ class ModuleService
         }
         
         return $result;
+    }
+    
+    public function install(ModuleDTO $module): bool
+    {
+        $transaction = \Yii::$app->db->beginTransaction();
+        try{
+            $this->fileRepository->install($module);
+            $this->dbRepository->install($module);
+            $transaction->commit();
+        } catch (\Exception $e){
+            $transaction->rollBack();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public function uninstall(ModuleDTO $module): bool
+    {
+        $transaction = \Yii::$app->db->beginTransaction();
+        try{
+            $this->fileRepository->uninstall($module);
+            $this->dbRepository->uninstall($module);
+            $transaction->commit();
+        } catch (\Exception $e){
+            $transaction->rollBack();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public function activate(ModuleDTO $module): bool
+    {
+        $transaction = \Yii::$app->db->beginTransaction();
+        try{
+            $this->fileRepository->activate($module);
+            $this->dbRepository->activate($module);
+            $transaction->commit();
+        } catch (\Exception $e){
+            $transaction->rollBack();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public function deactivate(ModuleDTO $module): bool
+    {
+        $transaction = \Yii::$app->db->beginTransaction();
+        try{
+            $this->fileRepository->deactivate($module);
+            $this->dbRepository->deactivate($module);
+            $transaction->commit();
+        } catch (\Exception $e){
+            $transaction->rollBack();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public function update(ModuleDTO $module): bool
+    {
+        $transaction = \Yii::$app->db->beginTransaction();
+        try{
+            $this->fileRepository->deactivate($module);
+            $this->dbRepository->deactivate($module);
+            $transaction->commit();
+        } catch (\Exception $e){
+            $transaction->rollBack();
+            return false;
+        }
+        
+        return true;
     }
 }

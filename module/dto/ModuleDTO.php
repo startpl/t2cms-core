@@ -17,10 +17,13 @@ class ModuleDTO
 {    
     public $path;
     public $name;
+    public $url;
     public $description;
     public $version;
     public $currentVersion;
     public $author;
     public $status;
-    public $icon;
+    public $fa_icon;
+    
+    public $namespace;
 }

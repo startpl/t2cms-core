@@ -44,10 +44,65 @@ class ModuleDBRepository
         return true;
     }
     
+    public function delete(Module $model): bool
+    {
+        if(!$model->delete()){
+            throw new \RuntimeException("Delete Error");
+        }
+        
+        return true;
+    }
+    
     public static function getAll($status = null): ?array
     {
         return Module::find()
                 ->andFilterWhere(['status' => $status])
                 ->all();
+    }
+    
+    public function install(\t2cms\module\dto\ModuleDTO $module): bool
+    {
+        $model = new Module([
+            'url' => $module->url,
+            'path' => $module->path,
+            'version' => $module->version,
+            'status'  => Module::STATUS_INSTALL,
+            'settings' => json_encode(Module::DEFAULT_SETTINGS)
+        ]);
+        
+        return $this->save($model);
+    }
+    
+    public function uninstall(\t2cms\module\dto\ModuleDTO $module): bool
+    {
+        $model = Module::findOne(['path' => $module->path]);
+        
+        return $this->delete($model);
+    }
+    
+    public function activate(\t2cms\module\dto\ModuleDTO $module): bool
+    {
+        return $this->setStatus($module, Module::STATUS_ACTIVE);
+    }
+    
+    public function deactivate(\t2cms\module\dto\ModuleDTO $module): bool
+    {
+        return $this->setStatus($module, Module::STATUS_INACTIVE);
+    }
+    
+    public function update(\t2cms\module\dto\ModuleDTO $module, $version): bool
+    {
+        $model = Module::findOne(['path' => $module->path]);
+        $model->version = $version;
+        
+        return $this->save($model);
+    }
+    
+    private function setStatus(\t2cms\module\dto\ModuleDTO $module, int $status): bool
+    {
+        $model = Module::findOne(['path' => $module->path]);
+        $model->status = $status;
+        
+        return $this->save($model);
     }
 }

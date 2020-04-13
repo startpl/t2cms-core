@@ -19,8 +19,8 @@ class m200408_053830_module extends Migration
             'version'    => $this->string(20),
             'status'     => $this->smallInteger(2),
             'settings'   => $this->string(255)->notNull(),
-            'created_at' => $this->dateTime()->notNull(),
-            'updated_at' => $this->dateTime()->notNull(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
         ]);
     }
 

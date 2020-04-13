@@ -26,6 +26,11 @@ class Module extends \yii\db\ActiveRecord
     
     const STATUS_ACTIVE    = 2;
     const STATUS_INACTIVE  = 3;
+    
+    const DEFAULT_SETTINGS = [
+        'autoload'   => true,
+        'url_access' => true
+    ];
         
     /**
      * {@inheritdoc}
@@ -52,8 +57,7 @@ class Module extends \yii\db\ActiveRecord
     {
         return [
             [['url', 'path', 'settings'], 'required'],
-            [['status'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['status', 'created_at', 'updated_at'], 'integer'],
             [['url'], 'string', 'max' => 100],
             [['path', 'settings'], 'string', 'max' => 255],
             [['version'], 'string', 'max' => 20],
@@ -75,6 +79,17 @@ class Module extends \yii\db\ActiveRecord
             'settings' => Yii::t('app', 'Settings'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
+        ];
+    }
+    
+    public static function getStatuses(): array
+    {
+        return [
+            self::STATUS_NEW => \Yii::t('app', 'New'),
+            self::STATUS_INSTALL => \Yii::t('app', 'Installed'),
+            self::STATUS_ACTIVE  => \Yii::t('app', 'Active'),
+            self::STATUS_INACTIVE => \Yii::t('app', 'Inactive'),
+            self::STATUS_UNINSTALL => \Yii::t('app', 'Uninstalled')
         ];
     }
 }
