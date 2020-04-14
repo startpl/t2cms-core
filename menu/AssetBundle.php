@@ -28,7 +28,7 @@ class AssetBundle extends \yii\web\AssetBundle
     ];
     
     public $depends = [
-        't2cms\AssetBundle',
+        't2cms\T2Asset',
     ];
 
 }
