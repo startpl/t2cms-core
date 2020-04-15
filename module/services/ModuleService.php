@@ -64,6 +64,18 @@ class ModuleService
         return $result;
     }
     
+    public function getAllActive(): ?array
+    {
+        $modules = $this->dbRepository->getAllActive();
+                
+        $result = [];
+        foreach($modules as $module){
+            $result[] = $this->getModule($module->path);
+        }
+        
+        return $result;
+    }
+    
     public function install(ModuleDTO $module): bool
     {
         $transaction = \Yii::$app->db->beginTransaction();
@@ -130,6 +142,20 @@ class ModuleService
         try{
             $this->fileRepository->deactivate($module);
             $this->dbRepository->deactivate($module);
+            $transaction->commit();
+        } catch (\Exception $e){
+            $transaction->rollBack();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public function setSetting($name, $value): bool
+    {
+        $transaction = \Yii::$app->db->beginTransaction();
+        try{
+            $this->dbRepository->setSetting($name, $value);
             $transaction->commit();
         } catch (\Exception $e){
             $transaction->rollBack();

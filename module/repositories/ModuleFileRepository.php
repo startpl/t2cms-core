@@ -56,9 +56,10 @@ class ModuleFileRepository
     }
     
     public function install(\t2cms\module\dto\ModuleDTO $module): bool
-    {
+    {        
         $class = $module->namespace . '\\' . 'ModuleInstall';
         $installClass = new $class();
+        
         if(!$installClass->install()){
             throw new \RuntimeException("Error install module: {$module->name}");
         }
@@ -70,6 +71,7 @@ class ModuleFileRepository
     {
         $class = $module->namespace . '\\' . 'ModuleInstall';
         $installClass = new $class();
+        
         if(!$installClass->uninstall()){
             throw new \RuntimeException("Error uninstall module: {$module->name}");
         }
@@ -81,6 +83,7 @@ class ModuleFileRepository
     {
         $class = $module->namespace . '\\' . 'ModuleInstall';
         $installClass = new $class();
+        
         if(!$installClass->activate()){
             throw new \RuntimeException("Error activate module: {$module->name}");
         }
@@ -92,6 +95,7 @@ class ModuleFileRepository
     {
         $class = $module->namespace . '\\' . 'ModuleInstall';
         $installClass = new $class();
+        
         if(!$installClass->deactivate()){
             throw new \RuntimeException("Error deactivate module: {$module->name}");
         }
@@ -103,6 +107,7 @@ class ModuleFileRepository
     {
         $class = $module->namespace . '\\' . 'ModuleInstall';
         $installClass = new $class();
+        
         if(!$installClass->update()){
             throw new \RuntimeException("Error update module: {$module->name}");
         }

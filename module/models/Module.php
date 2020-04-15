@@ -49,6 +49,14 @@ class Module extends \yii\db\ActiveRecord
             TimestampBehavior::className(),
         ];
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public static function find()
+    {
+        return new ModuleQuery(get_called_class());
+    }
 
     /**
      * {@inheritdoc}
@@ -85,7 +93,7 @@ class Module extends \yii\db\ActiveRecord
     public static function getStatuses(): array
     {
         return [
-            self::STATUS_NEW => \Yii::t('app', 'New'),
+            self::STATUS_NEW => \Yii::t('app', 'Not installed'),
             self::STATUS_INSTALL => \Yii::t('app', 'Installed'),
             self::STATUS_ACTIVE  => \Yii::t('app', 'Active'),
             self::STATUS_INACTIVE => \Yii::t('app', 'Inactive'),

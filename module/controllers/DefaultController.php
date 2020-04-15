@@ -41,7 +41,7 @@ class DefaultController extends Controller
         $module = $this->getModule($path);
         return $this->render('view', ['model' => $module]);
     }
-    
+        
     public function actionInstall($path)
     {
         $module = $this->getModule($path);
@@ -52,7 +52,7 @@ class DefaultController extends Controller
             \Yii::$app->session->setFlash('error', \Yii::t('app/error', 'Error install'));
         }
         
-        return $this->goBack(\Yii::$app->request->referrer);
+        return $this->redirect(['index']);
     }
     
     public function actionUninstall($path)
@@ -65,7 +65,7 @@ class DefaultController extends Controller
             \Yii::$app->session->setFlash('error', \Yii::t('app/error', 'Error uninstall'));
         }
         
-        return $this->goBack(\Yii::$app->request->referrer);
+        return $this->redirect(['index']);
     }
     
     public function actionActivate($path)
@@ -78,7 +78,7 @@ class DefaultController extends Controller
             \Yii::$app->session->setFlash('error', \Yii::t('app/error', 'Error activate'));
         }
         
-        return $this->goBack(\Yii::$app->request->referrer);
+        return $this->redirect(['index']);
     }
     
     public function actionDeactivate($path)
@@ -91,7 +91,7 @@ class DefaultController extends Controller
             \Yii::$app->session->setFlash('error', \Yii::t('app/error', 'Error deactivate'));
         }
         
-        return $this->goBack(\Yii::$app->request->referrer);
+        return $this->redirect(['index']);
     }
     
     public function actionUpdate($path)
@@ -104,7 +104,7 @@ class DefaultController extends Controller
             \Yii::$app->session->setFlash('error', \Yii::t('app/error', 'Error update'));
         }
         
-        return $this->goBack(\Yii::$app->request->referrer);
+        return $this->redirect(['index']);
     }
     
     private function getModule(string $path): \t2cms\module\dto\ModuleDTO

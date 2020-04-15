@@ -11,7 +11,7 @@ use t2cms\module\widgets\ModuleActions;
 $this->title = Yii::t('app', 'Modules');
 $this->params['breadcrumbs'][] = $this->title;
 
-t2cms\AssetBundle::register($this);
+t2cms\T2Asset::register($this);
 ?>
 <div class="module-index">
 
@@ -21,6 +21,7 @@ t2cms\AssetBundle::register($this);
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'id' => 'modules-grid',
         'columns' => [
             [
                 'attribute' => 'icon',
@@ -33,9 +34,16 @@ t2cms\AssetBundle::register($this);
             ],
             [
                 'attribute' => 'Name',
-                'format' => 'html',
+                'format' => 'raw',
                 'value' => function($model, $key, $index){
-                    return Html::a($model->name, ['view', 'path' => $model->path]);
+                    return Html::a(
+                        $model->name, 
+                        ['/module/'.$model->url], 
+                        [
+                            'data' => [
+                                'pjax' => 0,
+                            ]
+                        ]);
                 }
             ],
             'description',

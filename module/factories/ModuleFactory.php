@@ -32,6 +32,8 @@ abstract class ModuleFactory
         $module->fa_icon        = $config['fa_icon'];
         
         $module->namespace      = $config['namespace'];
+        
+        $module->settings = json_decode($config['settings'], true);
                 
         return $module;
     }

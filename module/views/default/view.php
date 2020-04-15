@@ -9,7 +9,7 @@ use yii\widgets\DetailView;
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Modules'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-t2cms\AssetBundle::register($this);
+t2cms\T2Asset::register($this);
 ?>
 <div class="module-view">
 

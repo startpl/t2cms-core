@@ -26,4 +26,6 @@ class ModuleDTO
     public $fa_icon;
     
     public $namespace;
+    
+    public $settings;
 }

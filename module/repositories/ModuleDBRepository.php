@@ -34,7 +34,13 @@ class ModuleDBRepository
         
         return $model;
     }
-        
+    
+    public function getAllActive(): ?array
+    {
+        return Module::find()->active()->all();
+    }
+
+
     public function save(Module $model): bool
     {
         if(!$model->save()){
