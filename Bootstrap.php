@@ -7,7 +7,6 @@
  */
 
 namespace t2cms;
-
 /**
  * Modulegithub.com/t2cms/sitemanager
  *
@@ -16,12 +15,30 @@ namespace t2cms;
  */
 class Bootstrap implements \yii\base\BootstrapInterface
 {
+    /**
+     * @var array Bootstraps list, order by index
+     */
+    private $bootstraps = [
+        't2cms\module\ModuleBootstrap'
+    ];
+    
     public function bootstrap($app) 
     {
-        \Yii::setAlias('@modules', '@app/../cms/modules');
+        \Yii::setAlias('@cms', '@app/../cms');
         if(!$app->request->isConsoleRequest){
-            \Yii::setAlias('@themes', '@app/../cms/themes');
+            \Yii::setAlias('@modules', '@cms/modules');
+            \Yii::setAlias('@themes', '@cms/themes');
             \Yii::setAlias('@theme', '@themes/'.$app->settings->get(design\Theme::SETTING_NAME));
+        }
+        
+        $this->runBootstraps($app);
+    }
+    
+    private function runBootstraps($app)
+    {
+        foreach($this->bootstraps as $bootstrapClass){
+            $bootstrap = \Yii::createObject($bootstrapClass);
+            $bootstrap->bootstrap($app);
         }
     }
 }
