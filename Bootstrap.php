@@ -25,9 +25,10 @@ class Bootstrap implements \yii\base\BootstrapInterface
     public function bootstrap($app) 
     {
         \Yii::setAlias('@cms', '@app/../cms');
+        \Yii::setAlias('@modules', '@cms/modules');
+        \Yii::setAlias('@themes', '@cms/themes');
+        
         if(!$app->request->isConsoleRequest){
-            \Yii::setAlias('@modules', '@cms/modules');
-            \Yii::setAlias('@themes', '@cms/themes');
             \Yii::setAlias('@theme', '@themes/'.$app->settings->get(design\Theme::SETTING_NAME));
         }
         
