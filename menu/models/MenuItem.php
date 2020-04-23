@@ -135,7 +135,7 @@ class MenuItem extends \yii\db\ActiveRecord
         
         $rows = MenuItem::find()
             ->joinWith(['itemContent' => function($query) use ($domain_id, $language_id){
-                $in = \yii\helpers\ArrayHelper::getColumn(MenuItemContentQuery::getAllId($domain_id, $language_id)->asArray()->all(), 'id');
+                $in = MenuItemContent::getAllSuitableId($domain_id, $language_id);
                 $query->andWhere(['IN','menu_item_content.id', $in]);
             }])
             ->select(['menu_item.id', 'tree', 'depth', 'lft', 'menu_item_content.name'])
@@ -157,6 +157,6 @@ class MenuItem extends \yii\db\ActiveRecord
      */
     public function getItemContent()
     {
-        return $this->hasOne(MenuItemContent::className(), ['menu_item_id' => 'id']);
+        return $this->hasOne(MenuItemContent::className(), ['src_id' => 'id']);
     }
 }

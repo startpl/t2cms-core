@@ -99,7 +99,7 @@ class ItemController extends Controller
         $domain_id   = Domains::getEditorDomainId();
         $language_id = Languages::getEditorLangaugeId();
         
-        $model = $this->findModel($id, $domain_id, $language_id);
+        $model = $this->findModel($id, $domain_id, $language_id);       
         
         if(
             $model->load(\Yii::$app->request->post())

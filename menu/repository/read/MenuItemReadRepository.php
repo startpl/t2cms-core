@@ -8,10 +8,8 @@
 
 namespace t2cms\menu\repository\read;
 
-use yii\helpers\ArrayHelper;
 use t2cms\menu\models\{
-    MenuItem,
-    MenuItemContentQuery
+    MenuItem
 };
 
 /**
@@ -24,13 +22,7 @@ class MenuItemReadRepository
 {
     public function get(int $id, $domain_id = null, $language_id = null): array
     {
-        $model = MenuItem::find()
-            ->with(['itemContent' => function($query) use ($id, $domain_id, $language_id){
-                $query->andWhere(['id' => MenuItemContentQuery::getId($id, $domain_id, $language_id)->one()]);
-            }])
-            ->andWhere(['menu_item.id' => $id])
-            ->asArray()
-            ->one();
+        $model = MenuItem::find()->withContent($id, $language_id, $domain_id)->asArray()->one();
                    
         if(!$model){
             throw new \DomainException("Menu with id: {$id} was not found");
@@ -43,7 +35,7 @@ class MenuItemReadRepository
     {
         return MenuItem::find()
             ->joinWith(['itemContent' => function($query) use ($domain_id, $language_id){
-                $in = ArrayHelper::getColumn(MenuItemContentQuery::getAllId($domain_id, $language_id)->asArray()->all(), 'id');
+                $in = MenuItemContent::getAllSuitableId($domain_id, $language_id);
                 $query->andWhere(['IN','menu_item_content.id', $in]);
             }])
             ->andWhere(['NOT IN', 'menu_item.id', 1])
@@ -57,11 +49,7 @@ class MenuItemReadRepository
         if($menu){
             return $menu->children()
                 ->joinWith(['itemContent' => function($query) use ($domain_id, $language_id){
-                    $in = ArrayHelper::getColumn(
-                        MenuItemContentQuery::getAllId($domain_id, $language_id)
-                        ->asArray()
-                        ->all()
-                    , 'id');
+                    $in = MenuItemContent::getAllSuitableId($domain_id, $language_id);
                     $query->andWhere(['IN','menu_item_content.id', $in]);
                 }])
                 ->orderBy('lft')

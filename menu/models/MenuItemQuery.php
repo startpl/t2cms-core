@@ -14,6 +14,11 @@ class MenuItemQuery extends \yii\db\ActiveQuery
     public function behaviors() {
         return [
             NestedSetsQueryBehavior::className(),
+            'content' => [
+                'class' => \t2cms\base\behaviors\ContentBehavior::className(),
+                'relationName' => 'itemContent',
+                'relationModel' => MenuItemContent::className()
+            ]
         ];
     }
 

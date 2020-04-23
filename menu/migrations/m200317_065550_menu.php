@@ -33,7 +33,7 @@ class m200317_065550_menu extends Migration
         
         $this->createTable('{{%menu_item_content}}', [
             'id'           => $this->primaryKey(),
-            'menu_item_id' => $this->integer()->notNull(),
+            'src_id' => $this->integer()->notNull(),
             'name'         => $this->string(255)->notNull(),
             'domain_id'    => $this->integer(),
             'language_id'  => $this->integer()
@@ -41,7 +41,7 @@ class m200317_065550_menu extends Migration
         
         $this->addForeignKey('fk-menu_item-tree', '{{%menu_item}}', 'tree', '{{%menu}}', 'id', 'CASCADE');
         
-        $this->addForeignKey('fk-mic-item-id', '{{%menu_item_content}}', 'menu_item_id', '{{%menu_item}}', 'id', 'CASCADE');
+        $this->addForeignKey('fk-mic-src_id', '{{%menu_item_content}}', 'src_id', '{{%menu_item}}', 'id', 'CASCADE');
         $this->addForeignKey('fk-mic-domain_id', '{{%menu_item_content}}', 'domain_id', '{{%domain}}', 'id', 'CASCADE');
         $this->addForeignKey('fk-mic-language_id', '{{%menu_item_content}}', 'language_id', '{{%language}}', 'id', 'CASCADE');
     }

@@ -9,11 +9,9 @@
 namespace t2cms\menu\repository;
 
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
 use t2cms\menu\models\{
     MenuItemContent,
-    MenuItem,
-    MenuItemContentQuery
+    MenuItem
 };
 
 /**
@@ -26,13 +24,8 @@ class MenuItemRepository
 {
     public function get(int $id, $domain_id = null, $language_id = null): ActiveRecord
     {
-        $model = MenuItem::find()
-            ->with(['itemContent' => function($query) use ($id, $domain_id, $language_id){
-                $query->andWhere(['id' => MenuItemContentQuery::getId($id, $domain_id, $language_id)->one()]);
-            }])
-            ->andWhere(['menu_item.id' => $id])
-            ->one();
-                   
+        $model = MenuItem::find()->withContent($id, $domain_id, $language_id)->one();
+                           
         if(!$model){
             throw new \DomainException("Menu with id: {$id} was not found");
         }
@@ -44,7 +37,7 @@ class MenuItemRepository
     {
         return MenuItem::find()
             ->joinWith(['itemContent' => function($query) use ($domain_id, $language_id){
-                $in = ArrayHelper::getColumn(MenuItemContentQuery::getAllId($domain_id, $language_id)->asArray()->all(), 'id');
+                $in = MenuItemContent::getAllSuitableId($domain_id, $language_id);
                 $query->andWhere(['IN','menu_item_content.id', $in]);
             }])
             ->andWhere(['NOT IN', 'menu_item.id', 1])
@@ -57,11 +50,7 @@ class MenuItemRepository
         if($menu){
             return $menu->children()
                 ->joinWith(['itemContent' => function($query) use ($domain_id, $language_id){
-                    $in = ArrayHelper::getColumn(
-                        MenuItemContentQuery::getAllId($domain_id, $language_id)
-                        ->asArray()
-                        ->all()
-                    , 'id');
+                    $in = MenuItemContent::getAllSuitableId($domain_id, $language_id);
                     $query->andWhere(['IN','menu_item_content.id', $in]);
                 }])
                 ->orderBy('lft')
@@ -131,10 +120,10 @@ class MenuItemRepository
     private function copyCategoryContent(\yii\db\ActiveRecord $model, $domain_id, $language_id)
     {
         $newContent = new MenuItemContent([
-            'name'         => $model->name,
-            'menu_item_id' => $model->menu_item_id,
-            'domain_id'    => $domain_id,
-            'language_id'  => $language_id
+            'name'        => $model->name,
+            'src_id'      => $model->src_id,
+            'domain_id'   => $domain_id,
+            'language_id' => $language_id
         ]);
         
         return $this->save($newContent);

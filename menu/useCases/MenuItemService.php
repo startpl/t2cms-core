@@ -11,8 +11,7 @@ namespace t2cms\menu\useCases;
 use t2cms\menu\models\{
     forms\MenuItemForm,
     MenuItem,
-    MenuItemContent,
-    MenuItemContentQuery
+    MenuItemContent
 };
 
 /**
