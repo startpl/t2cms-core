@@ -38,12 +38,22 @@ $this->registerJsVar('i18n', ['confirm' => \Yii::t('sitemanager', 'Are you sure?
         <div class="panel panel-default">
             <div class="panel-heading"><?=\Yii::t('sitemanager', 'Settings');?></div>
             <div class="panel-body" id="settings_wr">
-                
-                <?=$form->field($settings['disconnected'], "[disconnected]value")
-                    ->checkbox(['label' => false])
+                <?php //  debug($settings['disconnected']['value']);?>
+                <?=$form->field($settings['disconnected']['value'], "value")
+                    ->checkbox([
+                        'label' => false, 
+                        'name' => 'Setting[disconnected]',
+                        'id' => 'setting-disconnected'
+                    ])
                     ->label("Disconnected");?>
 
-                <?=$form->field($settings['site_name'], "[site_name]value")
+                <?=$form->field($settings['site_name']['value'], "value", [
+                        'inputOptions' => [
+                            'name' => 'Setting[site_name]',
+                            'class' => 'form-control',
+                            'id' => 'setting-site_name'
+                        ]
+                    ])
                     ->label("Site name");?>
                 
             </div>
@@ -55,15 +65,22 @@ $this->registerJsVar('i18n', ['confirm' => \Yii::t('sitemanager', 'Are you sure?
             <div class="panel-body" id="settings_wr">
                 <?php if(!empty($settings)):?>
                 <?php foreach($settings as $index => $setting):?>
-                <?php if($setting->setting->status == \t2cms\sitemanager\models\Setting::STATUS['CUSTOM']):?>
+                <?php if($setting->status == \t2cms\sitemanager\models\Setting::STATUS['CUSTOM']):?>
                 
                 <div class="custom-setting-wr">
-                    <?=$form->field($setting, "[$index]value", ['options' => ['class' => ($setting->setting->required? 'required' : '')]])->textarea()->label($index);?>
+                    <?=$form->field($setting['value'], "value", [
+                        'options' => ['class' => ($setting->required? 'required' : '')],
+                        'inputOptions' => [
+                            'name' => 'Setting['.$index.']',
+                            'class' => 'form-control',
+                            'id' => 'setting-'.$index
+                        ]
+                    ])->textarea()->label($index);?>
                     <div class="controls_wr">
-                        <a href="<?= yii\helpers\Url::to(['default/update', 'id' => $setting->setting->id]);?>">
+                        <a href="<?= yii\helpers\Url::to(['default/update', 'id' => $setting->id]);?>">
                             <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                         </a>
-                        <a data-href="<?= yii\helpers\Url::to(['default/delete', 'id' => $setting->setting->id]);?>" class="setting-delete">
+                        <a data-href="<?= yii\helpers\Url::to(['default/delete', 'id' => $setting->id]);?>" class="setting-delete">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </a>
                     </div>

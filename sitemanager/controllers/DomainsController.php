@@ -9,11 +9,15 @@
 namespace t2cms\sitemanager\controllers;
 
 use Yii;
-use t2cms\sitemanager\models\Domain;
-use t2cms\sitemanager\models\DomainSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use t2cms\sitemanager\models\{
+    forms\DomainForm,
+    Domain,
+    DomainSearch,
+    Setting
+};
 use t2cms\sitemanager\useCases\{
     DomainService, 
     SettingService
@@ -22,7 +26,6 @@ use t2cms\sitemanager\repositories\{
     DomainRepository,
     SettingRepository
 };
-use \t2cms\sitemanager\models\forms\DomainForm;
 
 /**
  * DomainsController implements the CRUD actions for Domain model.
@@ -76,7 +79,6 @@ class DomainsController extends Controller
      */
     public function actionIndex()
     {
-//        debug(\Yii::$app->params);
         $searchModel = new DomainSearch();
         $dataProvider = $this->domainRepository->search($searchModel, Yii::$app->request->queryParams);
 
@@ -188,7 +190,13 @@ class DomainsController extends Controller
     private function findDomainSettings($id, $language_id = null)
     {
         try{
-            $models = $this->settingRepository->getAllByDomain($id, $language_id);
+            $models = $this->settingRepository->getAllByStatus(
+                [
+                    Setting::STATUS['MAIN'],
+                    Setting::STATUS['CUSTOM']
+                ],
+                $id, 
+                $language_id);
         } catch(\DomainException $e){
             throw new NotFoundHttpException(Yii::t('sitemanager', 'The requested page does not exist.'));
         }

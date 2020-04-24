@@ -9,7 +9,6 @@
 namespace t2cms\sitemanager\repositories;
 
 use yii\db\ActiveRecord;
-use t2cms\sitemanager\repositories\query\SettingValueQuery;
 use t2cms\sitemanager\models\
 {
     Setting,
@@ -26,9 +25,8 @@ use t2cms\sitemanager\models\
  * @version 1.0
  */
 class SettingRepository 
-{
-    
-    const RELATE_NAME = 'setting';
+{    
+    const RELATION_NAME = 'value';
     
     /**
      * Checks if exists Setting by name
@@ -50,23 +48,34 @@ class SettingRepository
         return $model;
     }
     
-    public function getByName(string $name, $domain_id = null, $language_id = null): SettingValue
-    {        
-        $model = SettingValueQuery::getByName($name, $domain_id, $language_id)
-                ->indexBy('setting.name')
+    public function getByName(string $name, $domain_id = null, $language_id = null): Setting
+    {           
+        $setting = Setting::find()->where(['name' => $name])->one();
+        
+        $settingValue = SettingValue::find()
+                ->andWhere(['id' => SettingValue::getSuitableId($setting->id, $domain_id, $language_id)])
                 ->one();
         
-        return $model;
+        $setting->populateRelation(self::RELATION_NAME, $settingValue);
+        
+        return $setting;
     }
     
     public function getAllByStatus
     (
-        int $status      = Setting::STATUS['GENERAL'],
+        $status          = [Setting::STATUS['GENERAL']],
         int $domain_id   = null,
         int $language_id = null
     )
     {        
-        $model = SettingValueQuery::get($domain_id, $language_id, $status)->joinWith('setting')->indexBy('setting.name')->all();
+        $model = Setting::find()
+                ->with([self::RELATION_NAME =>function($query) use ($domain_id, $language_id) {
+                    $in = SettingValue::getAllSuitableId($domain_id, $language_id);
+                    $query->andWhere(['IN', 'id', $in]);
+                }])
+                ->andFilterWhere(['status' => $status])
+                ->indexBy('name')
+                ->all();
         
         if(!$model){
             throw new \DomainException("Setting with status: {$status} does not exist");
@@ -75,10 +84,37 @@ class SettingRepository
         return $model;
     }
     
-    public function getAllByDomain(int $domain_id, int $language_id = null)
+    public function getAll(int $domain_id, int $language_id = null)
     {
-        $model = SettingValueQuery::get($domain_id, $language_id)->indexBy('setting.name')->all();
+        $model = Setting::find()
+                ->with([self::RELATION_NAME =>function($query) use ($domain_id, $language_id) {
+                    $in = SettingValue::getAllSuitableId($domain_id, $language_id);
+                    $query->andWhere(['IN', 'id', $in]);
+                }])
+                ->indexBy('name')
+                ->all();
         
+        if(!$model){
+            throw new \DomainException("Setting for domain id: {$domain_id} does not exist");
+        }
+        
+        return $model;
+    }
+    
+    public function getAllForDomain(int $domain_id, int $language_id = null)
+    {
+        
+        $allSuitableIdForDomain = SettingValue::getAllSuitableIdForDomain($domain_id, $language_id);
+        
+        $model = Setting::find()
+                ->with([self::RELATION_NAME =>function($query) use ($domain_id, $language_id) {
+                    $in = array_values($allSuitableIdForDomain);
+                    $query->andWhere(['IN', 'id', $in]);
+                }])
+                ->andWhere(['id' => array_keys($allSuitableIdForDomain)])
+                ->indexBy('name')
+                ->all();
+                        
         if(!$model){
             throw new \DomainException("Setting for domain id: {$domain_id} does not exist");
         }
@@ -120,18 +156,19 @@ class SettingRepository
     public function saveAll(array $settings, array $data, $domain_id = null, $language_id = null): bool
     {
         foreach($settings as $index => $setting){
-            
-            $load = $data['SettingValue'][$index];
-            $load['required'] = $setting->setting->required;
+            $load = [
+                'value'    => $data['Setting'][$index],
+                'required' => $setting->required
+            ];
                         
-            if($setting->load($load, '') && $setting->validate()){
-                if(($setting->domain_id != $domain_id || $setting->language_id != $language_id)
-                    && $setting->getDirtyAttributes())
+            if($setting->value->load($load, '') && $setting->value->validate()){
+                if(($setting->value->domain_id != $domain_id || $setting->value->language_id != $language_id)
+                    && $setting->value->getDirtyAttributes())
                 {
-                    $this->copySetting($setting, $domain_id, $language_id);
+                    $this->copySetting($setting->value, $domain_id, $language_id);
                 }
                 else{
-                    $this->save($setting);
+                    $this->save($setting->value);
                 }
             }
             else{
@@ -169,7 +206,7 @@ class SettingRepository
         $transaction = \Yii::$app->db->beginTransaction();
         try{
             $this->save($setting);
-            $settingValue->link(self::RELATE_NAME, $setting);
+            $settingValue->link('setting', $setting);
             $transaction->commit();
         }catch(\RuntimeException $e){
             $transaction->rollBack();

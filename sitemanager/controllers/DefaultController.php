@@ -109,10 +109,10 @@ class DefaultController extends Controller
     {        
         $model = $this->findModel($id);
         
-        if($model->status != Setting::STATUS['CUSTOM']) throw new NotFoundHttpException(Yii::t('sitemanager', 'The requested page does not exist.'));
-        
-//        debug($model->generalValue);
-        
+        if($model->status != Setting::STATUS['CUSTOM']){
+            throw new NotFoundHttpException(Yii::t('sitemanager', 'The requested page does not exist.'));
+        }
+                
         if(($model->load(\Yii::$app->request->post()) && $model->validate())
                 && ($model->generalValue->load(\Yii::$app->request->post()) && $model->generalValue->validate())){
             if($this->settingService->update($model)){

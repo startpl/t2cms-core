@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Domain */
 
-$this->title = Yii::t('sitemanager', 'Update Setting');
+$this->title = Yii::t('sitemanager', 'Create Setting');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('sitemanager', 'Settings'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

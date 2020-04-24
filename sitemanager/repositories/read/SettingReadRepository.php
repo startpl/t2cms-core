@@ -9,7 +9,6 @@
 namespace t2cms\sitemanager\repositories\read;
 
 use t2cms\sitemanager\interfaces\ReadReposotory;
-use t2cms\sitemanager\repositories\query\SettingValueQuery;
 use t2cms\sitemanager\models\
 {
     Setting,
@@ -24,52 +23,59 @@ use t2cms\sitemanager\models\
  */
 class SettingReadRepository implements ReadReposotory
 {
-
+    const RELATION_NAME = 'value';
+    
     public function getById(int $id): array
-    {        
+    {
         return Setting::find()->where(['id' => $id])->asArray()->one();
     }
     
     public function getAllByStatus
     (
-        int $status    = Setting::STATUS['GENERAL'],
-        $domain_id     = null,
-        $language_id   = null,
-        $autoload      = null
-    ): array
-    {
-        $model = SettingValueQuery::get($domain_id, $language_id, $status, $autoload)
-                ->joinWith('setting')
-                ->indexBy('setting.name')
-                ->asArray()
-                ->all();
-                
-        return $model;
-    }
-    
-    public function getAllByDomain(int $domain_id, int $language_id = null, $autoload = null): array
+        $status          = [Setting::STATUS['GENERAL']],
+        int $domain_id   = null,
+        int $language_id = null
+    ): ?array
     {        
-        $model = SettingValueQuery::get($domain_id, $language_id, null, $autoload)
-                ->joinWith('setting')
-                ->indexBy('setting.name')
+        $model = Setting::find()
+                ->with([self::RELATION_NAME =>function($query) use ($domain_id, $language_id) {
+                    $in = SettingValue::getAllSuitableId($domain_id, $language_id);
+                    $query->andWhere(['IN', 'id', $in]);
+                }])
+                ->andFilterWhere(['status' => $status])
+                ->indexBy('name')
                 ->asArray()
                 ->all();
         
         return $model;
     }
     
-    public function getByName(string $name, $domain_id = null, $language_id = null): array
-    {        
-        $model = SettingValueQuery::getByName($name, $domain_id, $language_id)
-                ->indexBy('setting.name')
+    
+    public function getAll(int $domain_id, int $language_id = null, bool $autoload = null): ?array
+    {
+        $model = Setting::find()
+                ->with([self::RELATION_NAME =>function($query) use ($domain_id, $language_id) {
+                    $in = SettingValue::getAllSuitableId($domain_id, $language_id);
+                    $query->andWhere(['IN', 'id', $in]);
+                }])
+                ->andFilterWhere(['autoload' => $autoload])
+                ->indexBy('name')
+                ->asArray()
+                ->all();
+        return $model;
+    }
+    
+    public function getByName(string $name, $domain_id = null, $language_id = null): ?array
+    {           
+        $setting = Setting::find()->where(['name' => $name])->asArray()->one();
+        
+        $settingValue = SettingValue::find()
+                ->andWhere(['id' => SettingValue::getSuitableId($setting['id'], $domain_id, $language_id)])
                 ->asArray()
                 ->one();
         
-        return $model;
-    }
-    
-    public function getAll(): ?array
-    {
-        return Setting::find()->asArray()->all();
+        $setting['value'] = $settingValue;
+        
+        return $setting;
     }
 }

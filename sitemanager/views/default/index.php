@@ -32,13 +32,30 @@ $this->registerJsVar('homePageItems', $homePageItems);
 
     <?php $form = ActiveForm::begin(); ?>
 
-        <?=$form->field($settings['_disconnected'], "[_disconnected]value")->checkbox(['label' => false])->label("Disconnected");?>
-
-        <?=$form->field($settings['_site_name'], "[_site_name]value")->label("Site name");?>
+        <?=$form->field($settings['_disconnected']['value'], "value")
+            ->checkbox([
+                'label' => false, 
+                'name' => 'Setting[_disconnected]',
+                'id' => 'setting-_disconnected'
+            ])
+            ->label("Disconnected");?>
+    
+        <?=$form->field($settings['_site_name']['value'], "value", [
+            'inputOptions' => [
+                'name' => 'Setting[_site_name]',
+                'class' => 'form-control',
+                'id' => 'setting-_site_name'
+            ]
+        ])->label("Site name");?>
     
         <div class="row">
             <div class="col-md-6">
-                <?=$form->field($settings['home_page_type'], "[home_page_type]value")
+                <?=$form->field($settings['home_page_type']['value'], "value", [
+                    'inputOptions' => [
+                        'name' => 'Setting[home_page_type]',
+                        'class' => 'form-control',
+                        'id' => 'setting-home_page_type'
+                    ]])
                     ->dropDownList([
                         \Yii::t('sitemanager', 'Page'),
                         \Yii::t('sitemanager', 'Category')
@@ -47,11 +64,16 @@ $this->registerJsVar('homePageItems', $homePageItems);
         
             </div>
             <div class="col-md-6">
-                <?=$form->field($settings['home_page'], '[home_page]value')
-                        ->dropDownList(
-                            $homePageItems[($settings['home_page_type']->value == 0? 'pages' : 'categories')]
-                        )
-                        ->label('Home Page');?>
+                <?=$form->field($settings['home_page']['value'], 'value', [
+                    'inputOptions' => [
+                        'name' => 'Setting[home_page]',
+                        'class' => 'form-control',
+                        'id' => 'setting-home_page'
+                    ]])
+                    ->dropDownList(
+                            $homePageItems[($settings['home_page_type']['value']->value == 0? 'pages' : 'categories')]
+                    )
+                    ->label('Home Page');?>
             </div>
         </div>
         
@@ -61,7 +83,7 @@ $this->registerJsVar('homePageItems', $homePageItems);
 </div>
 <?php
 $js = <<<JS
-    $('#settingvalue-home_page_type-value').change(function(){
+    $('#setting-home_page_type').change(function(){
         const key   = $(this).val() > 0 ? 'categories' : 'pages';
         const dataItems = homePageItems[key];
         
@@ -76,7 +98,7 @@ $js = <<<JS
             items += '<option value="'+i+'">'+dataItems[i]+'</option>';
         }
         
-        $('#settingvalue-home_page-value').html(items);
+        $('#setting-home_page').html(items);
     });
 JS;
 

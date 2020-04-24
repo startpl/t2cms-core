@@ -70,7 +70,7 @@ class Setting extends \yii\db\ActiveRecord
      */
     public function getValue()
     {
-        return $this->hasOne(SettingValue::className(), ['setting_id' => 'id']);
+        return $this->hasOne(SettingValue::className(), ['src_id' => 'id']);
     }
     
     /**
@@ -78,12 +78,12 @@ class Setting extends \yii\db\ActiveRecord
      */
     public function getValues()
     {
-        return $this->hasMany(SettingValue::className(), ['setting_id' => 'id']);
+        return $this->hasMany(SettingValue::className(), ['src_id' => 'id']);
     }
     
     public function getGeneralValue()
     {
-        return $this->hasOne(SettingValue::className(), ['setting_id' => 'id'])
+        return $this->hasOne(SettingValue::className(), ['src_id' => 'id'])
                 ->andWhere(['domain_id' => null, 'language_id' => null]);
     }
 }

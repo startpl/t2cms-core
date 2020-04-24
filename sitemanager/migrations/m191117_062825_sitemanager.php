@@ -127,13 +127,13 @@ class m191117_062825_sitemanager extends Migration
         
         $this->createTable('{{%setting_value}}', [
             'id'          => $this->primaryKey(),
-            'setting_id'  => $this->integer()->notNull(),
+            'src_id'      => $this->integer()->notNull(),
             'domain_id'   => $this->integer(),
             'language_id' => $this->integer(),
             'value'       => $this->text()
         ]);
         
-        $this->addForeignKey('fk-setting-setting_id', '{{%setting_value}}', 'setting_id', '{{%setting}}', 'id', 'CASCADE');
+        $this->addForeignKey('fk-setting-src_id', '{{%setting_value}}', 'src_id', '{{%setting}}', 'id', 'CASCADE');
         $this->addForeignKey('fk-setting-domain_id', '{{%setting_value}}', 'domain_id', '{{%domain}}', 'id', 'CASCADE');
         $this->addForeignKey('fk-setting-language_id', '{{%setting_value}}', 'language_id', '{{%language}}', 'id', 'CASCADE');
 
@@ -180,7 +180,7 @@ class m191117_062825_sitemanager extends Migration
             $settingID = $this->db->lastInsertID;
             
             $tmp = $this->settingsValues[$value['name']];
-            $tmp['setting_id'] = $settingID;
+            $tmp['src_id'] = $settingID;
             $this->insert('{{%setting_value}}', $tmp);
         }
     }

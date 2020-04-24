@@ -126,11 +126,11 @@ class Settings extends \yii\base\Component
     {
         $key = [self::KEY_CACHE, 'host' => $this->domains->currentHost];
         $data = $this->cache->get($key);
-
+        
         if (!$data) {
             
             try{
-                $data = $this->settingsRepository->getAllByDomain($this->domains->getCurrentId(),$this->languages->getCurrentId(), true);
+                $data = $this->settingsRepository->getAll($this->domains->getCurrentId(),$this->languages->getCurrentId(), true);
             }
             catch(\DomainException $e){
                 return [];
@@ -164,8 +164,7 @@ class Settings extends \yii\base\Component
             $this->cache->set($key, $data);
         }
         
-        
-        \Yii::$app->params[$name] = $data[$name]['value']; 
+        \Yii::$app->params[$name] = $data[$name]['value']['value']; 
         
         return \Yii::$app->params[$name];
     }
@@ -179,7 +178,7 @@ class Settings extends \yii\base\Component
     private function loadToParams(array &$data): void
     {
         foreach($data as $key => $value){
-            \Yii::$app->params[$key] = $value['value'];
+            \Yii::$app->params[$key] = $value['value']['value'];
         }
         
         unset($data);
