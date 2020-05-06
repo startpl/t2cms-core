@@ -60,7 +60,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'created_at',
                 'format' => 'date'
             ],
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'headerOptions' => [
+                    'width' => 80
+                ]
+            ],
         ],
     ]); ?>
 

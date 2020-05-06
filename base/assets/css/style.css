@@ -46,3 +46,8 @@
 .mb-40{
     margin-bottom:40px;
 }
+
+#modules-grid .open > .dropdown-menu {
+    left:initial;
+    right:0;
+}

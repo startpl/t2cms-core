@@ -24,6 +24,7 @@ class Bootstrap implements \yii\base\BootstrapInterface
     
     public function bootstrap($app) 
     {
+        \Yii::setAlias('@www', '@app/../www');
         \Yii::setAlias('@cms', '@app/../cms');
         \Yii::setAlias('@modules', '@cms/modules');
         \Yii::setAlias('@themes', '@cms/themes');

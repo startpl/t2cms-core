@@ -17,7 +17,7 @@ namespace t2cms\sitemanager\interfaces;
 interface ReadReposotory {
     
     /**
-     * Gets models by parent id
+     * Gets model by id
      * 
      * @param int $id
      * @return array|null

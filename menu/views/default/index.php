@@ -23,14 +23,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
+            [
+                'attribute' => 'id',
+                'headerOptions' => [
+                    'width' => 80
+                   ]
+            ],
             [
                 'attribute' => 'name',
                 'label' => 'Name',
                 'format' => 'html',
                 'value' => function($model, $key, $index){
-                    return \yii\helpers\Html::a($model->name, ['items', 'id' => $model->id]);
+                    $anchor = rmrevin\yii\fontawesome\FontAwesome::i('list').' '.$model->name;
+                    return \yii\helpers\Html::a($anchor, ['items', 'id' => $model->id]);
                 }
             ],
             'title',

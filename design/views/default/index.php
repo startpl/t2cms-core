@@ -37,11 +37,15 @@ use yii\widgets\Pjax;
 <style>
 .themes-list .img{
     width:100%;
-    height:225px;
+    height:180px;
     background-size:contain;
+    background-repeat:no-repeat;
 }
 .themes-list .theme{
     position:relative;
+}
+.themes-list h2{
+    margin-top:5px;
 }
 .themes-list .theme > .label{
     position: absolute;
