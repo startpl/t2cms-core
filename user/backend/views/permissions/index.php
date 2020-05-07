@@ -18,14 +18,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
         <?php foreach($permissions as $permission):?>
         <?php 
-            $children = ArrayHelper::getColumn($permission->children, 'name');
+            $parents = ArrayHelper::getColumn($permission->parents, 'name');
         ?>
         <div class="col-md-3 col-sm-6">
             <div class="title"><?=\Yii::t('user', $permission->description)?></div>
             <div class="body">
                 <?php foreach($roles as $role):?>
                     <?php 
-                        $value = in_array($role->name, $children);
+                        $value = in_array($role->name, $parents);
                     ?>
                     <div class="checkbox">
                         <?=Html::hiddenInput(

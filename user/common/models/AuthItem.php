@@ -105,16 +105,6 @@ class AuthItem extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[AuthItemChildren0]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAuthItemChildren0()
-    {
-        return $this->hasMany(AuthItemChild::className(), ['child' => 'name']);
-    }
-
-    /**
      * Gets query for [[Children]].
      *
      * @return \yii\db\ActiveQuery

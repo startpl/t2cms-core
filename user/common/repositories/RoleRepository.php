@@ -70,9 +70,11 @@ class RoleRepository extends \yii\base\BaseObject
     public function assignPermission(string $roleName, string $permissionName): bool
     {
         $item = new AuthItemChild([
-            'parent' => $permissionName,
-            'child'  => $roleName
+            'parent' => $roleName,
+            'child'  => $permissionName
         ]);
+        
+        
 
         if(!$item->save()){
             throw new \RuntimeException("Error assign permission role");
@@ -84,7 +86,7 @@ class RoleRepository extends \yii\base\BaseObject
     public function removePermission(string $roleName, string $permissionName): bool
     {
         $item = AuthItemChild::find()
-                ->where(['parent' => $permissionName, 'child' => $roleName])
+                ->where(['parent' => $roleName, 'child' => $permissionName])
                 ->one();
 
         if(!$item->delete()){

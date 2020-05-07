@@ -62,12 +62,12 @@ class RoleService
         try{
             foreach($permissions as $permission){
                 $data = array_keys(array_filter($post[$permission->name]));
-
-                $childrenRoles = ArrayHelper::getColumn($permission->children, 'name');
-
-                $newRoles    = array_diff($data, $childrenRoles);
-                $deleteRoles = array_diff($childrenRoles, $data);
                 
+                $parentRoles = ArrayHelper::getColumn($permission->parents, 'name');
+
+                $newRoles    = array_diff($data, $parentRoles);
+                $deleteRoles = array_diff($parentRoles, $data);
+                                
                 $this->roleRepository->assignMiltiple($newRoles, $permission->name);
                 $this->roleRepository->removeMiltiple($deleteRoles, $permission->name);
             }
