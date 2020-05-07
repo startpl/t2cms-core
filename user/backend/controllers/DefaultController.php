@@ -26,6 +26,18 @@ class DefaultController extends Controller
     public function behaviors()
     {
         return [
+            'panelAccess' => [
+                'class' => \t2cms\base\behaviors\AdminPanelAccessControl::className()
+            ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['manageRBAC'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

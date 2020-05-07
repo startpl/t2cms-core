@@ -16,6 +16,27 @@ class PermissionsController extends Controller
 {
     private $roleService;
     
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'panelAccess' => [
+                'class' => \t2cms\base\behaviors\AdminPanelAccessControl::className()
+            ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['manageRBAC'],
+                    ],
+                ],
+            ],
+        ];
+    }
+    
     public function __construct($id, $module, RoleService $roleService, $config = array()) 
     {
         parent::__construct($id, $module, $config);

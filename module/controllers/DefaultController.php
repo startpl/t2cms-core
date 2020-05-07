@@ -17,6 +17,27 @@ class DefaultController extends Controller
 {    
     private $moduleService;
     
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'panelAccess' => [
+                'class' => \t2cms\base\behaviors\AdminPanelAccessControl::className()
+            ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['manageModule'],
+                    ],
+                ],
+            ]
+        ];
+    }
+    
     public function __construct($id, $module, ModuleService $moduleService, $config = array()) {
         parent::__construct($id, $module, $config);
         

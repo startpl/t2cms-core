@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;UserStatus;
+use yii\widgets\ActiveForm;
 use t2cms\user\common\enums\UserStatus;
 use yii\helpers\ArrayHelper;
 

@@ -18,12 +18,25 @@ class RolesController extends Controller
 {
     private $roleRepository;
     private $roleService;
+    
     /**
      * {@inheritdoc}
      */
     public function behaviors()
     {
         return [
+            'panelAccess' => [
+                'class' => \t2cms\base\behaviors\AdminPanelAccessControl::className()
+            ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['manageRBAC'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

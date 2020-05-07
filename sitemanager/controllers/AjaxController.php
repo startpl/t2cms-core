@@ -25,12 +25,25 @@ class AjaxController extends Controller
 {
     private $languageRepository;
     private $domainRepository;
+
     /**
      * {@inheritdoc}
      */
     public function behaviors()
     {
         return [
+            'panelAccess' => [
+                'class' => \t2cms\base\behaviors\AdminPanelAccessControl::className()
+            ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['manageSetting'],
+                    ],
+                ],
+            ],
             [
                 'class' => AjaxFilter::className(),
             ],
