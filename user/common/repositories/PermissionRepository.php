@@ -53,6 +53,7 @@ class PermissionRepository extends \yii\base\BaseObject
         return AuthItem::find()
                 ->with('children')
                 ->where(['type' => AuthItem::PERMISSION_TYPE])
+                ->orderBy('name, created_at')
                 ->all();
     }
 }

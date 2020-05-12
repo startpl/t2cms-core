@@ -80,4 +80,20 @@ class RoleService
         return true;
     }
     
+    public function createRoles(array $roles): bool
+    {
+        foreach($roles as $role) {
+            $item = new AuthItem([
+                'type' => AuthItem::ROLE_TYPE,
+                'name' => $role['name'],
+                'description' => $role['description']
+            ]);
+            
+            if(!$this->save($item)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 }

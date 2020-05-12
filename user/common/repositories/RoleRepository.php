@@ -98,6 +98,9 @@ class RoleRepository extends \yii\base\BaseObject
     
     public static function getAll(): ?array
     {
-        return AuthItem::find()->where(['type' => AuthItem::ROLE_TYPE])->all();
+        return AuthItem::find()
+            ->where(['type' => AuthItem::ROLE_TYPE])
+            ->orderBy('name, created_at')
+            ->all();
     }
 }

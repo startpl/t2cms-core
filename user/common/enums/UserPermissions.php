@@ -31,6 +31,14 @@ class UserPermissions
         [
             'name' => 'manageRBAC',
             'description' => 'Roles and Permission management'
+        ],
+        [
+            'name' => 'manageModule',
+            'description' => 'Modules management'
+        ],
+        [
+            'name' => 'manageMenu',
+            'description' => 'Menu management'
         ]
     ];
 }

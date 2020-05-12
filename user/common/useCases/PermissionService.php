@@ -52,4 +52,21 @@ class PermissionService
         
         return true;
     }
+    
+    public function createPermissions(array $permissions): bool
+    {
+        foreach($permissions as $permission) {
+            $item = new AuthItem([
+                'type' => AuthItem::PERMISSION_TYPE,
+                'name' => $permission['name'],
+                'description' => $permission['description']
+            ]);
+            
+            if(!$this->save($item)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 }
