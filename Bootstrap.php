@@ -33,7 +33,25 @@ class Bootstrap implements \yii\base\BootstrapInterface
             \Yii::setAlias('@theme', '@themes/'.$app->settings->get(design\Theme::SETTING_NAME));
         }
         
+        $this->registerI18N();
+        
         $this->runBootstraps($app);
+    }
+    
+    private function registerI18N()
+    {
+        \Yii::$app->i18n->translations['t2cms'] = [
+            'class'    => \yii\i18n\PhpMessageSource::class,
+            'sourceLanguage' => 'en-US',
+            'basePath' => __DIR__ . '/base/messages',
+            'fileMap'  => [
+                "t2cms" => "app.php",
+                "t2cms/error" => "error.php", 
+            ],
+        ];
+        
+        \Yii::$app->language = 'ru-RU';
+        
     }
     
     private function runBootstraps($app)

@@ -1,0 +1,26 @@
+<?php
+return [
+    'Success save' => 'Успешно сохранено',
+    'Success create' => 'Успешно создано',
+    'New password' => 'Новый пароль',
+    'Password repeat' => 'Повторите пароль',
+    'Save' => 'Сохранить',
+    'Create User' => 'Создать пользователя',
+    'Users' => 'Пользователи',
+    'Login' => 'Логин',
+    'Status' => 'Статус',
+    'Role' => 'Роль',
+    'Registration date' => 'Дата регистрации',
+    'Update User: {name}' => 'Обновить пользователя: {name}',
+    'Update' => 'Обновить',
+    'Delete' => 'Удалить',
+    'Are you sure you want to delete this item?' => 'Вы уверены что хотите удалить этот элемент?',
+    'Create Role' => 'Создать роль',
+    'Active' => 'Активный',
+    'Inactive' => 'Неактивный',
+    'Deleted' => 'Удаленный',
+    'Item Name' => 'Имя элемента',
+    'Parent' => 'Родитель',
+    'Child' => 'Ребенок',
+    
+];
