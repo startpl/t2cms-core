@@ -6,58 +6,63 @@
  * and open the template in the editor.
  */
 
-namespace t2cms\user\console\controllers;
+namespace t2cms\base\console\controllers;
 
 use yii\console\Controller;
-use t2cms\user\common\useCases\RoleService;
-use t2cms\user\common\useCases\PermissionService;
+use yii\helpers\Console;
 
 /**
- * Description of DefaultController
+ * Init
  *
  * @author Koperdog <koperdog.dev@gmail.com>
  * @version 1.0
  */
 class InitController extends Controller 
-{
-    private $roleService;
-    private $permissionService;
+{    
+    const MIGRATION_PATH = '@vendor/';
+    const MIGRATIONS = [
+        't2cms-core/sitemanager/migrations',
+        't2cms-core/module/migrations',
+        't2cms-core/menu/migrations',
+        't2cms-blog/migrations'
+    ];
     
-    public function __construct(
-        $id, 
-        $module, 
-        RoleService $roleService, 
-        PermissionService $permissionService,
-        $config = array()
-    )
-    {
+    private $migration;
+    
+    public function __construct($id, $module, $config = array()) {
         parent::__construct($id, $module, $config);
         
-        $this->roleService       = $roleService;
-        $this->permissionService = $permissionService;
+        $this->migration = new \yii\console\controllers\MigrateController('migrate', \Yii::$app);
     }
     
     public function actionIndex()
-    {
-        $roles = \t2cms\user\common\enums\UserRoles::ROLES;
+    {        
+        $this->initRBAC();
         
-        $permissions = \t2cms\user\common\enums\UserPermissions::PERMISSIONS;
-        
-        if(
-            $this->roleService->createRoles($roles)
-            && $this->permissionService->createPermissions($permissions)){
-            echo 'success';
-        } else {
-            echo 'error';
+        foreach(self::MIGRATIONS as $path) {
+            $this->migration->runAction('up', ['migrationPath' => self::MIGRATION_PATH . $path, 'interactive' => false]);   
         }
+        
+        $this->stdout("SUCCESS INIT T2CMS." . PHP_EOL, Console::BG_GREEN, Console::FG_BLACK);
     }
     
-    public function actionMakeAdmin()
+    private function initRBAC() 
     {
-        $userRole = \Yii::$app->authManager->getRole('admin');
-        \Yii::$app->authManager->assign($userRole, 1);
+        $this->migration->runAction('up', ['migrationPath' => '@yii/rbac/migrations/', 'interactive' => false]);
         
-        echo 'success';
+        $roleService       = \Yii::createObject('\t2cms\user\common\useCases\RoleService');
+        $permissionService = \Yii::createObject('\t2cms\user\common\useCases\PermissionService');
+        $roleRepository    = \Yii::createObject('\t2cms\user\common\repositories\RoleRepository');
+        
+        $user = new \t2cms\user\console\controllers\InitController(
+                'user', 
+                \Yii::$app,
+                $roleService,
+                $permissionService,
+                $roleRepository
+        );
+        $user->runAction('index');
+        $user->runAction('init-assignments');
     }
         
 }

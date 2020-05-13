@@ -6,45 +6,21 @@
  * @license https://github.com/startpl/t2cms-core/sitemanager/blob/master/LICENSE
  */
 
-namespace t2cms\user\console;
+namespace t2cms\base\console;
 
 /**
- * Module
+ * T2CMS console module
  *
  * @author Koperdog <koperdog@dev.gmail.com>
  * @version 1.0
  */
 class Module extends \yii\base\Module
 {
-    const MODULE_NAME = "user";
+    const MODULE_NAME = "t2cms";
     
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = 't2cms\user\console\controllers';
+    public $controllerNamespace = 't2cms\base\console\controllers';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function init()
-    {
-        parent::init();
-        
-        $this->registerTranslations();
-    }
-    
-    private function registerTranslations()
-    {
-        if (!isset(\Yii::$app->i18n->translations[self::MODULE_NAME . '*'])) {
-            
-            \Yii::$app->i18n->translations[self::MODULE_NAME . '*'] = [
-                'class'    => \yii\i18n\PhpMessageSource::class,
-                'sourceLanguage' => 'en-US',
-                'basePath' => __DIR__ . '/messages',
-                'fileMap'  => [
-                    self::MODULE_NAME . "/error" => "error.php", 
-                ],
-            ];
-        }
-    }
 }
