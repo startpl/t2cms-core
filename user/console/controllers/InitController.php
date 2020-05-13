@@ -76,13 +76,19 @@ class InitController extends Controller
         
         $this->stdout("Success init rbac assignments." . PHP_EOL, Console::FG_GREEN);
     }
-    
-    public function actionMakeAdmin()
+        
+    public function actionCreateAdmin()
     {
+        $user = new \common\models\User();
+        $user->username = 'admin';
+        $user->email = 'admin@admin.ru';
+        $user->status = \common\models\User::STATUS_ACTIVE;
+        $user->setPassword('admin@admin');
+        $user->save();
+        
         $userRole = \Yii::$app->authManager->getRole('admin');
-        \Yii::$app->authManager->assign($userRole, 1);
+        \Yii::$app->authManager->assign($userRole, $user->id);
         
-        $this->stdout("Success make Admin user(1)." . PHP_EOL, Console::FG_GREEN);
+        $this->stdout("Success make Admin user." . PHP_EOL, Console::FG_GREEN);
     }
-        
 }

@@ -43,6 +43,8 @@ class InitController extends Controller
             $this->migration->runAction('up', ['migrationPath' => self::MIGRATION_PATH . $path, 'interactive' => false]);   
         }
         
+        
+        
         $this->stdout("SUCCESS INIT T2CMS." . PHP_EOL, Console::BG_GREEN, Console::FG_BLACK);
     }
     
@@ -63,6 +65,7 @@ class InitController extends Controller
         );
         $user->runAction('index');
         $user->runAction('init-assignments');
+        $user->runAction('create-admin');
     }
         
 }
