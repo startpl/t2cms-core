@@ -8,7 +8,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel t2cms\user\common\models\AuthItemSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('user', 'Roles');
+$this->title = Yii::t('t2cms', 'Roles');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="auth-item-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('user', 'Create Role'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('t2cms', 'Create Role'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'description',
                 'value' => function($model, $key, $index){
-                    return \Yii::t('user', $model->description);
+                    return \Yii::t('t2cms', $model->description);
                 }
             ],
             'created_at:date',

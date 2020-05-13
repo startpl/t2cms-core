@@ -51,7 +51,7 @@ class UserForm extends Model
     public function roleValidator($attribute, $params): void
     {
         if(!AuthItem::find()->where(['name' => $this->role, 'type' => AuthItem::ROLE_TYPE])->exists()){
-            $this->addError($attribute, \Yii::t('user', 'Role {role} does not exist', ['role' => $this->role]));
+            $this->addError($attribute, \Yii::t('t2cms/error', 'Role {role} does not exist', ['role' => $this->role]));
         }
     }
     

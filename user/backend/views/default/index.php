@@ -11,7 +11,7 @@ use t2cms\user\common\repositories\RoleRepository;
 /* @var $searchModel t2cms\user\common\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('user', 'Users');
+$this->title = Yii::t('t2cms', 'Users');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             [
-                'label' => \Yii::t('user', 'Login'),
+                'label' => \Yii::t('t2cms', 'Login'),
                 'attribute' => 'username',
                 'format' => 'html',
                 'value' => function($model, $key, $index){
@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'email',
             [
-                'label' => \Yii::t('user', 'Status'),
+                'label' => \Yii::t('t2cms', 'Status'),
                 'attribute' => 'status',
                 'filter' => UserStatus::getStatuses(),
                 'value' => function($model, $key, $index){
@@ -46,17 +46,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'label' => \Yii::t('user', 'Role'),
+                'label' => \Yii::t('t2cms', 'Role'),
                 'attribute' => 'role',
                 'format' => 'text',
                 'filter' => ArrayHelper::getColumn(RoleRepository::getAll(), 'description'),
                 'value' => function($model, $key, $index){
                     $role = array_shift(\Yii::$app->authManager->getRolesByUser($model->id));
-                    return \Yii::t('user', $role->description);
+                    return \Yii::t('t2cms', $role->description);
                 }
             ],
             [
-                'label' => \Yii::t('user', 'Registration date'),
+                'label' => \Yii::t('t2cms', 'Registration date'),
                 'attribute' => 'created_at',
                 'format' => 'date'
             ],

@@ -80,15 +80,15 @@ class RolesController extends Controller
                 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             if($this->roleService->save($form)){
-                Yii::$app->session->setFlash('success', Yii::t('user', "Success create"));
+                Yii::$app->session->setFlash('success', Yii::t('t2cms', "Success create"));
                 return $this->redirect('index');
             } else {
-                Yii::$app->session->setFlash('error', Yii::t('user/error', "Error create"));
+                Yii::$app->session->setFlash('error', Yii::t('t2cms/error', "Error create"));
                 return $this->refresh();
             }
             
         } else if(Yii::$app->request->post()){
-            Yii::$app->session->setFlash('error', Yii::t('user/error', "Error validate form"));
+            Yii::$app->session->setFlash('error', Yii::t('t2cms/error', "Error validate form"));
         }
 
         return $this->render('create', [
@@ -109,15 +109,15 @@ class RolesController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if($this->roleService->save($model)){
-                Yii::$app->session->setFlash('success', Yii::t('user', "Success save"));
+                Yii::$app->session->setFlash('success', Yii::t('t2cms', "Success save"));
             } else {
-                Yii::$app->session->setFlash('error', Yii::t('user/error', "Error save"));
+                Yii::$app->session->setFlash('error', Yii::t('t2cms/error', "Error save"));
             }
             
             return $this->refresh();
             
         } else if(Yii::$app->request->post()){
-            Yii::$app->session->setFlash('error', Yii::t('user/error', "Error validate form"));
+            Yii::$app->session->setFlash('error', Yii::t('t2cms/error', "Error validate form"));
         }
 
         return $this->render('update', [
@@ -137,7 +137,7 @@ class RolesController extends Controller
         try{
             $model = $this->roleRepository->get($id);
         } catch (\DomainException $e){
-            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+            throw new NotFoundHttpException(Yii::t('t2cms/error', 'The requested page does not exist'));
         }
 
         return $model;

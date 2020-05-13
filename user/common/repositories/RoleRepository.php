@@ -74,8 +74,6 @@ class RoleRepository extends \yii\base\BaseObject
             'child'  => $permissionName
         ]);
         
-        
-
         if(!$item->save()){
             throw new \RuntimeException("Error assign permission role");
         }

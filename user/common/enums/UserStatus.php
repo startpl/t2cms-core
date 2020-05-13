@@ -20,9 +20,9 @@ class UserStatus
     public static function getStatuses(): array
     {
         return [
-            User::STATUS_ACTIVE => \Yii::t('user', 'Active'),
-            User::STATUS_INACTIVE => \Yii::t('user', 'Inactive'),
-            User::STATUS_DELETED => \Yii::t('user', 'Deleted')
+            User::STATUS_ACTIVE => \Yii::t('t2cms', 'Active'),
+            User::STATUS_INACTIVE => \Yii::t('t2cms', 'Inactive'),
+            User::STATUS_DELETED => \Yii::t('t2cms', 'Deleted')
         ];
     }
 }

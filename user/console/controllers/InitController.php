@@ -12,6 +12,7 @@ use yii\console\Controller;
 use t2cms\user\common\useCases\RoleService;
 use t2cms\user\common\useCases\PermissionService;
 use t2cms\user\common\repositories\RoleRepository;
+use yii\helpers\Console;
 
 /**
  * Description of DefaultController
@@ -50,9 +51,9 @@ class InitController extends Controller
         if(
             $this->roleService->createRoles($roles)
             && $this->permissionService->createPermissions($permissions)){
-            echo 'success';
+            $this->stdout("Success created roles and permissions." . PHP_EOL, Console::FG_GREEN);
         } else {
-            echo 'error';
+            $this->stdout("Error created roles and permissions." . PHP_EOL, Console::FG_RED);
         }
     }
     
@@ -73,7 +74,7 @@ class InitController extends Controller
             }
         }
         
-        echo 'success';
+        $this->stdout("Success init rbac assignments." . PHP_EOL, Console::FG_GREEN);
     }
     
     public function actionMakeAdmin()
@@ -81,7 +82,7 @@ class InitController extends Controller
         $userRole = \Yii::$app->authManager->getRole('admin');
         \Yii::$app->authManager->assign($userRole, 1);
         
-        echo 'success';
+        $this->stdout("Success make Admin user(1)." . PHP_EOL, Console::FG_GREEN);
     }
         
 }

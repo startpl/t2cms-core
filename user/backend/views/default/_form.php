@@ -20,12 +20,12 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'status')->dropDownList(UserStatus::getStatuses()) ?>
     
-    <?= $form->field($model, 'newPassword')->label(\Yii::t('user', 'New password'))?>
-    <?= $form->field($model, 'passwordRepeat')->label(\Yii::t('user', 'Password repeat'))?>
+    <?= $form->field($model, 'newPassword')->label(\Yii::t('t2cms', 'New password'))?>
+    <?= $form->field($model, 'passwordRepeat')->label(\Yii::t('t2cms', 'Password repeat'))?>
     
     
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('user', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('t2cms', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

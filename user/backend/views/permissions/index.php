@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
             $parents = ArrayHelper::getColumn($permission->parents, 'name');
         ?>
         <div class="col-md-3 col-sm-6">
-            <div class="title"><?=\Yii::t('user', $permission->description)?></div>
+            <div class="title"><?=\Yii::t('t2cms', $permission->description)?></div>
             <div class="body">
                 <?php foreach($roles as $role):?>
                     <?php 
@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endforeach;?>
         </div>
         <p>
-            <?=Html::submitButton(\Yii::t('app', 'Save'), ['class' => 'btn btn-success']);?>
+            <?=Html::submitButton(\Yii::t('t2cms', 'Save'), ['class' => 'btn btn-success']);?>
         </p>
     <?=Html::endForm();?>
 

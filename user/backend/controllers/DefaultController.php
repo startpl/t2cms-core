@@ -106,13 +106,13 @@ class DefaultController extends Controller
 
         if($form->load(Yii::$app->request->post()) && $form->validate()) {
             if($this->userService->save($form, $model)){
-                Yii::$app->session->setFlash('success', Yii::t('user', "Success save"));
+                Yii::$app->session->setFlash('success', Yii::t('t2cms', "Success save"));
             } else {
-                Yii::$app->session->setFlash('error', Yii::t('user/error', "Error save"));
+                Yii::$app->session->setFlash('error', Yii::t('t2cms/error', "Error save"));
             }
         }
         else if(Yii::$app->request->post()){
-            Yii::$app->session->setFlash('error', Yii::t('user/error', "Error validate"));
+            Yii::$app->session->setFlash('error', Yii::t('t2cms/error', "Error validate"));
         }
 
         return $this->render('update', [
@@ -148,6 +148,6 @@ class DefaultController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('user', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('t2cms/error', 'The requested page does not exist.'));
     }
 }

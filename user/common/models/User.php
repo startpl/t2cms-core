@@ -59,16 +59,16 @@ class User extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('user', 'ID'),
-            'username' => Yii::t('user', 'Username'),
-            'auth_key' => Yii::t('user', 'Auth Key'),
-            'password_hash' => Yii::t('user', 'Password Hash'),
-            'password_reset_token' => Yii::t('user', 'Password Reset Token'),
-            'email' => Yii::t('user', 'Email'),
-            'status' => Yii::t('user', 'Status'),
-            'created_at' => Yii::t('user', 'Created At'),
-            'updated_at' => Yii::t('user', 'Updated At'),
-            'verification_token' => Yii::t('user', 'Verification Token'),
+            'id' => Yii::t('t2cms', 'ID'),
+            'username' => Yii::t('t2cms', 'Username'),
+            'auth_key' => Yii::t('t2cms', 'Auth Key'),
+            'password_hash' => Yii::t('t2cms', 'Password Hash'),
+            'password_reset_token' => Yii::t('t2cms', 'Password Reset Token'),
+            'email' => Yii::t('t2cms', 'Email'),
+            'status' => Yii::t('t2cms', 'Status'),
+            'created_at' => Yii::t('t2cms', 'Created At'),
+            'updated_at' => Yii::t('t2cms', 'Updated At'),
+            'verification_token' => Yii::t('t2cms', 'Verification Token'),
         ];
     }
     
