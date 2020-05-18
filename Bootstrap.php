@@ -31,11 +31,10 @@ class Bootstrap implements \yii\base\BootstrapInterface
         
         if(!$app->request->isConsoleRequest){
             \Yii::setAlias('@theme', '@themes/'.$app->settings->get(design\Theme::SETTING_NAME));
+            
+            $this->registerI18N();
+            $this->runBootstraps($app);
         }
-        
-        $this->registerI18N();
-        
-        $this->runBootstraps($app);
     }
     
     private function registerI18N()
@@ -50,12 +49,15 @@ class Bootstrap implements \yii\base\BootstrapInterface
             ],
         ];
         
-        \Yii::$app->language = 'ru-RU';
         
+        $userLanguage = \Yii::$app->request->cookies->getValue('language')? 
+            : \Yii::$app->languages->getDefault()['code_local'];
+        
+        \Yii::$app->language = $userLanguage;
     }
     
     private function runBootstraps($app)
-    {
+    {        
         foreach($this->bootstraps as $bootstrapClass){
             $bootstrap = \Yii::createObject($bootstrapClass);
             $bootstrap->bootstrap($app);

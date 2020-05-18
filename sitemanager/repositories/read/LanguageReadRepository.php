@@ -19,7 +19,6 @@ use t2cms\sitemanager\models\Language;
  */
 class LanguageReadRepository implements ReadReposotory
 {
-   
     public function getById(int $id): array
     {
         if(!$model = Language::find()->where(['id' => $id])->asArray()->one()){

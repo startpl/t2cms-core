@@ -92,4 +92,9 @@ class Languages extends \yii\base\Component
         
         return ((int)\Yii::$app->session->get('_language') > 0)? (int)\Yii::$app->session->get('_language'): null;
     }
+    
+    public static function setLanguage(string $code): bool
+    {
+        return \t2cms\sitemanager\useCases\UserService::setLanguage($code);
+    }
 }

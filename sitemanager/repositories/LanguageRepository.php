@@ -23,9 +23,15 @@ use \t2cms\sitemanager\models\{
  */
 class LanguageRepository 
 {
+    
     public function search(LanguageSearch $searchModel, array $query = [])
     {        
         return $searchModel->search($query);
+    }
+    
+    public static function existsByCode(string $code): bool
+    {
+        return Language::find()->where(['code_local' => $code])->exists();
     }
     
     public function exist(int $id): bool
