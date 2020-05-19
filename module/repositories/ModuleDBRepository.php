@@ -73,7 +73,7 @@ class ModuleDBRepository
             'path' => $module->path,
             'version' => $module->version,
             'status'  => Module::STATUS_INSTALL,
-            'settings' => json_encode(Module::DEFAULT_SETTINGS)
+            'show_in_menu' => false
         ]);
         
         return $this->save($model);
@@ -104,6 +104,19 @@ class ModuleDBRepository
         return $this->save($model);
     }
     
+    public function showMenuToggle(\t2cms\module\dto\ModuleDTO $module, $value): bool
+    {
+        $model = Module::findOne(['path' => $module->path]);
+        $model->show_in_menu = $value;
+        
+        return $this->save($model);
+    }
+    
+    public function getAllToShowMenu(): ?array
+    {
+        return Module::find()->where(['show_in_menu' => true])->all();
+    }
+    
     private function setStatus(\t2cms\module\dto\ModuleDTO $module, int $status): bool
     {
         $model = Module::findOne(['path' => $module->path]);
@@ -111,4 +124,5 @@ class ModuleDBRepository
         
         return $this->save($model);
     }
+    
 }

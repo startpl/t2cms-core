@@ -42,9 +42,10 @@ class ModuleService
         }
         
         try{
-            $infoDB   = $this->dbRepository->getByPath($path);
+            $infoDB = $this->dbRepository->getByPath($path);
             $config['currentVersion'] = $infoDB->version;
             $config['status'] = $infoDB->status;
+            $config['show_in_menu'] = $infoDB->show_in_menu;
         } catch (\DomainException $e) {
             $config['status'] = Module::STATUS_NEW;
         }
@@ -151,17 +152,31 @@ class ModuleService
         return true;
     }
     
-    public function setSetting($name, $value): bool
+    public function showMenuToggle($module, $value): bool
     {
         $transaction = \Yii::$app->db->beginTransaction();
+               
         try{
-            $this->dbRepository->setSetting($name, $value);
+            $this->dbRepository->showMenuToggle($module, $value);
             $transaction->commit();
         } catch (\Exception $e){
+            debug($e);
             $transaction->rollBack();
             return false;
         }
         
         return true;
+    }
+    
+    public function getAllToShowMenu(): ?array
+    {
+        $modules = $this->dbRepository->getAllToShowMenu();
+                
+        $result = [];
+        foreach($modules as $module){
+            $result[] = $this->getModule($module->path);
+        }
+        
+        return $result;
     }
 }

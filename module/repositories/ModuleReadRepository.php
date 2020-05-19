@@ -47,4 +47,5 @@ class ModuleReadRepository
     {
         return FileHelper::findDirectories($this->pathThemes, ['recursive' => false]);
     }
+    
 }

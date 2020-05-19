@@ -11,6 +11,8 @@ use t2cms\module\widgets\ModuleActions;
 $this->title = Yii::t('app', 'Modules');
 $this->params['breadcrumbs'][] = $this->title;
 
+$this->registerJsVar('urlShowMenuToggle', \yii\helpers\Url::to(['show-menu-toggle']));
+
 t2cms\T2Asset::register($this);
 ?>
 <div class="module-index">
@@ -57,6 +59,34 @@ t2cms\T2Asset::register($this);
                 }
             ],
             [
+                'label'     => \Yii::t('t2cms', 'Show in menu'),
+                'options' => ['width'=>'120px'],
+                'format'    => 'raw',
+                'value' => function($model, $key, $index){
+                    if($model->status !== t2cms\module\models\Module::STATUS_NEW
+                        && $model->status !== t2cms\module\models\Module::STATUS_UNINSTALL
+                    ) {
+                        $html  = Html::beginTag('div', ['class' => 'switch_checkbox']);
+                        $html .= Html::checkbox(
+                                    "showInMenu[{$model->path}]", 
+                                    $model->show_in_menu, 
+                                    [
+                                        'id' => 'show_in_menu'.$model->path, 
+                                        'class' => 'change-show_in_menu',
+                                        'data' => [
+                                            'path' => $model->path
+                                        ]
+                                    ]
+                                );
+                        $html .= Html::label('Switch', 'show_in_menu'.$model->path);
+                        $html .= Html::endTag('div');
+                    } else {
+                        $html = \Yii::t('t2cms', 'Not installed');
+                    }
+                    return $html;
+                }
+            ],
+            [
                 'label' => \Yii::t('app', 'Controls'),
                 'headerOptions' => ['width' => '80'],
                 'format' => 'raw',
@@ -73,3 +103,35 @@ t2cms\T2Asset::register($this);
     <?php Pjax::end(); ?>
 
 </div>
+
+<?php
+$js = <<<JS
+    $('.change-show_in_menu').change(function(){
+        const modulePath = $(this).data('path');
+        
+        let formData = new FormData();
+        formData.set('modulePath', modulePath);
+        formData.set('value', $(this).prop('checked'));
+        
+        $.ajax({
+            type: "POST",
+            url: urlShowMenuToggle,
+            data: formData,
+            dataType: 'json',
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: (response) => {
+                if(response.success) {
+                    $(this).prop('checked', response.value);
+                } else {
+                    $(this).prop('checked', !response.value);
+                }
+            },
+            error: (response) => console.error(response)
+        });
+    });
+JS;
+
+$this->registerJs($js);
+?>

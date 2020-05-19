@@ -27,5 +27,5 @@ class ModuleDTO
     
     public $namespace;
     
-    public $settings;
+    public $show_in_menu;
 }

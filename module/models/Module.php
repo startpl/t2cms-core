@@ -13,7 +13,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $path
  * @property string|null $version
  * @property int|null $status
- * @property string $settings
+ * @property int $show_in_menu
  * @property string $created_at
  * @property string $updated_at
  */
@@ -26,12 +26,7 @@ class Module extends \yii\db\ActiveRecord
     
     const STATUS_ACTIVE    = 2;
     const STATUS_INACTIVE  = 3;
-    
-    const DEFAULT_SETTINGS = [
-        'autoload'   => true,
-        'url_access' => true
-    ];
-        
+            
     /**
      * {@inheritdoc}
      */
@@ -64,10 +59,11 @@ class Module extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['url', 'path', 'settings'], 'required'],
+            [['url', 'path', 'show_in_menu'], 'required'],
             [['status', 'created_at', 'updated_at'], 'integer'],
             [['url'], 'string', 'max' => 100],
-            [['path', 'settings'], 'string', 'max' => 255],
+            [['show_in_menu'], 'boolean'],
+            [['path'], 'string', 'max' => 255],
             [['version'], 'string', 'max' => 20],
             [['url', 'path'], 'unique']
         ];
@@ -84,7 +80,7 @@ class Module extends \yii\db\ActiveRecord
             'path' => Yii::t('app', 'Path'),
             'version' => Yii::t('app', 'Version'),
             'status' => Yii::t('app', 'Status'),
-            'settings' => Yii::t('app', 'Settings'),
+            'show_in_menu' => Yii::t('app', 'Show in menu'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ];

@@ -33,7 +33,7 @@ abstract class ModuleFactory
         
         $module->namespace      = $config['namespace'];
         
-        $module->settings = json_decode($config['settings'], true);
+        $module->show_in_menu = $config['show_in_menu'];
                 
         return $module;
     }

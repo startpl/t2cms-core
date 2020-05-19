@@ -62,6 +62,23 @@ class DefaultController extends Controller
         $module = $this->getModule($path);
         return $this->render('view', ['model' => $module]);
     }
+    
+    public function actionShowMenuToggle()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $data = \Yii::$app->request->post();
+        
+        $modulePath = $data['modulePath'];
+        $value      = $data['value'] == "true";
+                
+        $module = $this->getModule($modulePath);
+        
+        if($this->moduleService->showMenuToggle($module, $value)) {
+            return ['success' => true, 'value' => $value];
+        }
+        
+        return ['success' => false, 'value' => $value];
+    }
         
     public function actionInstall($path)
     {
