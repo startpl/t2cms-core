@@ -16,8 +16,9 @@ use Yii;
  * @author Koperdog <koperdog.dev@gmail.com>
  * @version 1.0
  */
-class NestedSetsTreeMenu extends \startpl\yii2NestedSetsMenu\base\NestedSetsTree
+class NSTreeMenu extends \startpl\yii2NestedSetsMenu\base\NestedSetsTree
 {
+    const ALLOW_ALWAYS = ['everyone', 'user'];
 
     /**
      * @var string
@@ -58,19 +59,25 @@ class NestedSetsTreeMenu extends \startpl\yii2NestedSetsMenu\base\NestedSetsTree
      */
     protected function renameTitle(&$node)
     {
-        $node[$this->labelOutAttribute] = $node['itemContent'][$this->labelAttribute];
+        $img = $node['image']? \yii\helpers\Html::img($node['image'], ['alt' => $node['itemContent'][$this->labelAttribute]]) : '';
+        $node[$this->labelOutAttribute] = $img . $node['itemContent'][$this->labelAttribute];
         unset($node['itemContent']);
     }
 
 
     /**
      * Видимость пункта меню (visible = false - скрыть элемент)
+     * Проверяем только текущий пункт, а не все вверх по дереву.
+     * Потому что если узел недоступен - дочерние пропускаются.
+     * 
+     * 
      * @param $node
      * @return array
      */
     protected function visible(&$node)
     {
-        $node['visible'] = (bool)$node['status'];
+        $node['visible'] = (bool)$node['status'] 
+             && (in_array($node['access'], self::ALLOW_ALWAYS) || \Yii::$app->user->can($node['access']));
     }
 
 

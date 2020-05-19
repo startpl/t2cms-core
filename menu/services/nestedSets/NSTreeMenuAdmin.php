@@ -16,7 +16,7 @@ use Yii;
  * @author Koperdog <koperdog.dev@gmail.com>
  * @version 1.0
  */
-class NestedSetsTreeMenu extends \startpl\yii2NestedSetsMenu\base\NestedSetsTree
+class NSTreeMenuAdmin extends \startpl\yii2NestedSetsMenu\base\NestedSetsTree
 {
 
     /**

@@ -20,7 +20,7 @@ use t2cms\menu\models\{
  */
 class MenuItemReadRepository 
 {
-    public function get(int $id, $domain_id = null, $language_id = null): array
+    public static function get(int $id, $domain_id = null, $language_id = null): array
     {
         $model = MenuItem::find()->withContent($id, $language_id, $domain_id)->asArray()->one();
                    
@@ -31,7 +31,7 @@ class MenuItemReadRepository
         return $model;
     }
     
-    public function getAll($domain_id = null, $language_id = null, $exclude = null): ?array
+    public static function getAll($domain_id = null, $language_id = null, $exclude = null): ?array
     {
         return MenuItem::find()
             ->joinWith(['itemContent' => function($query) use ($domain_id, $language_id){
@@ -44,12 +44,12 @@ class MenuItemReadRepository
             ->all();
     }
     
-    public function getItemsByMenu(MenuItem $menu, $domain_id = null, $language_id = null): ?array
+    public static function getItemsByMenu(MenuItem $menu, $domain_id = null, $language_id = null): ?array
     {        
         if($menu){
             return $menu->children()
                 ->joinWith(['itemContent' => function($query) use ($domain_id, $language_id){
-                    $in = MenuItemContent::getAllSuitableId($domain_id, $language_id);
+                    $in = \t2cms\menu\models\MenuItemContent::getAllSuitableId($domain_id, $language_id);
                     $query->andWhere(['IN','menu_item_content.id', $in]);
                 }])
                 ->orderBy('lft')
@@ -60,7 +60,7 @@ class MenuItemReadRepository
         return null;
     }
     
-    public function getRoot(int $treeId): ?MenuItem
+    public static function getRoot(int $treeId): ?MenuItem
     {
         $model = MenuItem::find()
                 ->where(['tree' => $treeId, 'type' => MenuItem::TYPE_ROOT])
