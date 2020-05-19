@@ -22,5 +22,8 @@ return [
     'Item Name' => 'Имя элемента',
     'Parent' => 'Родитель',
     'Child' => 'Ребенок',
-    
+    'Administrator' => 'Администратор',
+    'Content manager' => 'Контент менеджер',
+    'User' => 'Пользователь',
+    'Everyone' => 'Все',
 ];
