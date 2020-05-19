@@ -133,4 +133,38 @@ class MenuItemRepository
     {
         $model->link($name, $target);
     }
+    
+    public function getParents(MenuItem $model): ?array
+    {
+        $parents = $model->parents()->all();
+        array_shift($parents); // offset depth shift 
+        return $parents;
+    }
+    
+    public function getParentNodeById(int $id): MenuItem
+    {
+        if(!$model = MenuItem::findOne($id)->parents(1)->one()){
+            throw new \DomainException("MenuItem have not parents");
+        }
+        
+        return $model;
+    }
+    
+    public function getParentNode(MenuItem $model): MenuItem
+    {
+        if(!$model = $model->parents(1)->one()){
+            throw new \DomainException("MenuItem have not parents");
+        }
+        
+        return $model;
+    }
+    
+     public function setPosition(MenuItem $model, MenuItem $parentNode): bool
+    {
+        if(!$model->appendTo($parentNode, false)){
+            throw new \RuntimeException('Error saving model');
+        }
+        
+        return true;
+    }
 }

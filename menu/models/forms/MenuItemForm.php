@@ -17,6 +17,10 @@ class MenuItemForm extends Model
     public $status;
     public $target;
     
+    public $image;
+    public $access;
+    public $render_js;
+    
     public $itemContent;
     
     public function __construct($config = array()) {
@@ -32,8 +36,8 @@ class MenuItemForm extends Model
     {
         return [
             [['parent_id'], 'integer'],
-            [['status', 'target'], 'boolean'],
-            [['data'], 'string', 'max' => 255],
+            [['status', 'target', 'render_js'], 'boolean'],
+            [['data', 'access', 'image'], 'string', 'max' => 255],
             [['type'], 'default', 'value' => \t2cms\menu\models\MenuItem::TYPE_URI]
         ];
     }

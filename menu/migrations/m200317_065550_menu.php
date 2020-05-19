@@ -21,6 +21,7 @@ class m200317_065550_menu extends Migration
         $this->createTable('{{%menu_item}}', [
             'id'        => $this->primaryKey(),
             'data'      => $this->string(255),
+            'image'     => $this->string(255),
             'type'      => $this->integer()->notNull(),
             'lft'       => $this->integer()->notNull(),
             'rgt'       => $this->integer()->notNull(),
@@ -28,7 +29,9 @@ class m200317_065550_menu extends Migration
             'depth'     => $this->integer()->notNull(),
             'parent_id' => $this->integer(),
             'status'    => $this->boolean()->notNull(),
-            'target'    => $this->boolean()->notNull()
+            'target'    => $this->boolean()->notNull(),
+            'render_js' => $this->boolean(),
+            'access'    => $this->string(255)->notNull(),
         ]);
         
         $this->createTable('{{%menu_item_content}}', [

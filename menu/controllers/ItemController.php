@@ -96,14 +96,16 @@ class ItemController extends Controller
             \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error create'));
         }
         
-        $pages = \startpl\t2cmsblog\helpers\PageHelper::getAll();
+        $pages      = \startpl\t2cmsblog\helpers\PageHelper::getAll();
         $categories = \startpl\t2cmsblog\helpers\CategoryHelper::getAll();
+        $modules    = \t2cms\module\helpers\ModuleHelper::getAllActive();
         
         return $this->render('create',[
             'menuId'  => $menuId,
             'model' => $form,
             'pages' => $pages,
-            'categories' => $categories
+            'categories' => $categories,
+            'modules' => $modules,
         ]);
     }
     
@@ -131,14 +133,16 @@ class ItemController extends Controller
             \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error save'));
         }
         
-        $pages = \startpl\t2cmsblog\helpers\PageHelper::getAll();
+        $pages      = \startpl\t2cmsblog\helpers\PageHelper::getAll();
         $categories = \startpl\t2cmsblog\helpers\CategoryHelper::getAll();
+        $modules    = \t2cms\module\helpers\ModuleHelper::getAllActive();
         
         return $this->render('update',[
             'menuId'  => $model->tree,
             'model' => $model,
             'pages' => $pages,
-            'categories' => $categories
+            'categories' => $categories,
+            'modules'   => $modules,
         ]);
     }
     

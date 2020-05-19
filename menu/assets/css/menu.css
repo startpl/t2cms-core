@@ -15,3 +15,37 @@
 .menu-item-form .nav.nav-tabs{
     text-align: right;
 }
+
+#menuItems-grid .id {
+    width: 5%;
+    /*max-width: 50px;*/
+}
+
+#menuItems-grid .name {
+    width: 20%;
+    /*max-width: 220px;*/
+}
+
+#menuItems-grid .image {
+    width: 20%;
+    /*max-width: 220px;*/
+}
+#menuItems-grid .image  img{
+    width: 100%;
+    height: auto;
+    /*max-width: 220px;*/
+}
+#menuItems-grid .type {
+    width: 20%;
+    /*max-width: 220px;*/
+}
+#menuItems-grid .data {
+    width: 20%;
+    /*max-width: 220px;*/
+}
+#menuItems-grid ._action {
+    max-width: 100px;
+}
+.tree-view .thead > div > div, .tree-view .category > div {
+    display: block;
+}

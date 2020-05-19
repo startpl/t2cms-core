@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use t2cms\menu\models\MenuItem;
 use yii\helpers\ArrayHelper;
+use t2cms\user\common\repositories\RoleRepository;
 use t2cms\sitemanager\components\{
     Domains,
     Languages
@@ -19,6 +20,12 @@ $jsModel = ArrayHelper::toArray($model);
 $jsModel['name'] = $model->itemContent->name;
 
 $this->registerJsVar('model', $jsModel);
+
+$roles = ArrayHelper::map(RoleRepository::getAll(), 'name', 'description');
+
+foreach($roles as &$role) {
+    $role = \Yii::t('t2cms', $role);
+}
 ?>
 <div class="menu-item-form">
     <ul class="nav nav-tabs">
@@ -27,6 +34,9 @@ $this->registerJsVar('model', $jsModel);
         </li>
         <li class="nav-item" data-type="<?= MenuItem::TYPE_BLOG_CATEGORY?>">
             <a class="nav-link" data-toggle="tab" href="#category"><?=\Yii::t('menu', 'Category')?></a>
+        </li>
+        <li class="nav-item" data-type="<?= MenuItem::TYPE_MODULE?>">
+            <a class="nav-link" data-toggle="tab" href="#module"><?=\Yii::t('menu', 'Module')?></a>
         </li>
         <li class="nav-item" data-type="<?= MenuItem::TYPE_URI?>">
             <a class="nav-link" data-toggle="tab" href="#uri"><?=\Yii::t('menu', 'Link')?></a>
@@ -59,6 +69,15 @@ $this->registerJsVar('model', $jsModel);
                         <ul>
                         <?php foreach($categories as $category):?>
                             <li><a data-id="<?=$category['id'];?>" data-type="<?= MenuItem::TYPE_BLOG_CATEGORY?>"><?=$category['categoryContent']['name']?></a></li>
+                        <?php endforeach;?>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="module" data-type="<?= MenuItem::TYPE_MODULE?>">
+                    <div class="categories-list menu-list-type" id="menu-modules-list">
+                        <ul>
+                        <?php foreach($modules as $module):?>
+                            <li><a data-id="<?=$module->path;?>" data-type="<?= MenuItem::TYPE_MODULE?>"><?=$module->name?></a></li>
                         <?php endforeach;?>
                         </ul>
                     </div>
@@ -107,6 +126,15 @@ $this->registerJsVar('model', $jsModel);
                                 ]
                             ]) ?>
                         
+                            <?= $form->field($model, 'image')->widget(\mihaildev\elfinder\InputFile::className(), [
+                                'controller'    => 'elfinder',
+                                'filter'        => 'image',
+                                'template'      => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
+                                'options'       => ['class' => 'form-control'],
+                                'buttonOptions' => ['class' => 'btn btn-default'],
+                                'multiple'      => false 
+                            ]); ?>
+                        
                             <?= $form->field($model, 'type', [
                                 'inputOptions' => [
                                     'id' => 'menuitem-type'
@@ -127,9 +155,21 @@ $this->registerJsVar('model', $jsModel);
                             <?= $form->field($model, 'status')->checkbox([
                                 'label' => \Yii::t('menu', 'Active')
                             ])?>
+                            <?= $form->field($model, 'render_js')->checkbox([
+                                'label' => \Yii::t('menu', 'Render using js?')
+                            ])?>
                             <?= $form->field($model, 'target')->checkbox([
                                 'label' => \Yii::t('menu', 'Open in new window?')
                             ])?>
+                        
+                            <?= $form->field($model, 'access')->dropDownList(
+                                array_merge(
+                                    [
+                                        'everyone' => \Yii::t('t2cms', 'Everyone') 
+                                    ],
+                                    $roles
+                                )
+                            ) ?>
 
                             <div class="form-group">
                                 <?= Html::submitButton(Yii::t('menu', 'Submit'), ['class' => 'btn btn-primary']) ?>

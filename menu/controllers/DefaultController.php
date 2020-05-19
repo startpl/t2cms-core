@@ -130,6 +130,16 @@ class DefaultController extends Controller
         return $this->redirect(['index']);
     }
     
+    public function actionSort()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
+        $data = json_decode(\Yii::$app->request->post('sort'));
+        $result = $this->menuItemService->sort($data);
+        
+        return ['result' => $result];
+    }
+    
     public function actionItems($id)
     {
         $domain_id   = Domains::getEditorDomainId();

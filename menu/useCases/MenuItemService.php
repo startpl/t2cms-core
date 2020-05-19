@@ -50,7 +50,10 @@ class MenuItemService
             'data'      => $form->data,
             'parent_id' => $form->parent_id,
             'status'    => $form->status,
-            'target'    => $form->target
+            'target'    => $form->target,
+            'access'    => $form->access,
+            'render_js' => $form->render_js,
+            'image'     => $form->image,
         ]);
         
         $itemContent = new MenuItemContent([
@@ -68,6 +71,7 @@ class MenuItemService
             $this->menuItemRepository->link('item', $model, $itemContent);
             $transaction->commit();
         } catch (\Exception $e) {            
+            debug($e);
             $transaction->rollBack();
             return null;
         }
@@ -111,5 +115,30 @@ class MenuItemService
         }
         
         return true;
+    }
+    
+    public function sort(array $data): int
+    {
+        $result = 0;
+        
+        $transaction = \Yii::$app->db->beginTransaction();
+        try{
+            $parentNode = $this->menuItemRepository->getParentNodeById($data[0]);
+            
+            foreach($data as $index => $value){
+                $item = $this->menuItemRepository->get($value);
+                $this->menuItemRepository->setPosition($item, $parentNode);
+                                
+                $result++;
+            }
+            
+            $transaction->commit();
+        } catch(\Exception $e){
+            debug($e);
+            $transaction->rollBack();
+            return 0;
+        }
+        
+        return $result;
     }
 }

@@ -16,6 +16,9 @@ use creocoder\nestedsets\NestedSetsBehavior;
  * @property int $rgt
  * @property int $depth
  * @property int|null $parent_id
+ * @property string $image
+ * @property string $access
+ * @property boolean $render_js
  * @property boolean $status
  * 
  * @property Menu $menu
@@ -27,11 +30,14 @@ class MenuItem extends \yii\db\ActiveRecord
     const TYPE_URI           = 0;
     const TYPE_BLOG_CATEGORY = 1;
     const TYPE_BLOG_PAGE     = 2;
+    const TYPE_MODULE        = 4;
     
     const OFFSET_ROOT = 1;
     
     const TARGET_CURRENT = 0;
     const TARGET_NEW_WIN = 1;
+    
+    public $children;
     
     /**
      * {@inheritdoc}
@@ -49,8 +55,8 @@ class MenuItem extends \yii\db\ActiveRecord
         return [
             [['type'], 'required'],
             [['type', 'tree', 'lft', 'rgt', 'depth', 'parent_id'], 'integer'],
-            [['status', 'target'], 'boolean'],
-            [['data'], 'string', 'max' => 255],
+            [['status', 'target', 'render_js'], 'boolean'],
+            [['data', 'image', 'access'], 'string', 'max' => 255],
             [['status'], 'default', 'value' => true],
             [['target'], 'default', 'value' => self::TARGET_CURRENT],
             
@@ -110,9 +116,10 @@ class MenuItem extends \yii\db\ActiveRecord
     public static function getItemTypes(): array
     {
         return [
-            self::TYPE_URI => \Yii::t('menu', 'URI'),
+            self::TYPE_URI           => \Yii::t('menu', 'URI'),
             self::TYPE_BLOG_CATEGORY => \Yii::t('menu', 'Category'),
-            self::TYPE_BLOG_PAGE => \Yii::t('menu', 'Page'),
+            self::TYPE_BLOG_PAGE     => \Yii::t('menu', 'Page'),
+            self::TYPE_MODULE        => \Yii::t('menu', 'Module')
         ];
     }
     

@@ -9,6 +9,7 @@
 namespace t2cms\menu\helpers;
 
 use t2cms\menu\models\MenuItem;
+use t2cms\module\services\ModuleMenuFacade;
 
 /**
  * Description of MenuHelper
@@ -30,6 +31,9 @@ class MenuUrl{
                 break;
             case MenuItem::TYPE_BLOG_CATEGORY:
                 $url = ['blog/category', 'id' => $item['data']];
+                break;
+            case MenuItem::TYPE_MODULE:
+                $url = ['/' . ModuleMenuFacade::getModuleUrl($item['data'])];
                 break;
             case MenuItem::TYPE_URI:
             default:

@@ -12,6 +12,11 @@ use t2cms\menu\models\MenuItem;
 $this->title = Yii::t('menu', 'Items of {name}', ['name' => $model->title]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('menu', 'Menu'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+\yii\jui\JuiAsset::register($this);
+t2cms\menu\AssetBundle::register($this);
+
+$this->registerJsVar('URL_SORT', yii\helpers\Url::to(['sort', 'id' => $id]));
 ?>
 <div class="menu-index">
 
@@ -34,14 +39,12 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
-    <?php Pjax::begin(); ?>
     
-    <?= GridView::widget([
+    <?=\t2cms\treeview\TreeView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'id' => 'menuItems-grid',
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             [
                 'attribute' => 'name',
@@ -51,6 +54,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     $anchor = str_repeat(' - ', $model->depth - MenuItem::OFFSET_ROOT) . ' ' . $model->itemContent->name;
                     return \yii\helpers\Html::a($anchor, ['/menu/item/update', 'id' => $model->id]);
                 }
+            ],
+            [
+                'attribute' => 'image',
+                'label'     => 'image',
+                'format'    => 'image',
             ],
             [
                 'attribute' => 'type',
@@ -75,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'class' => 'yii\grid\ActionColumn',
+                'class' => 't2cms\treeview\base\ActionColumn',
                 'header' => 'Actions',
                 'template' => '{update} {delete}',
                 'buttons' =>
@@ -101,7 +109,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-
-    <?php Pjax::end(); ?>
 
 </div>
