@@ -48,6 +48,22 @@ $this->registerJsVar('homePageItems', $homePageItems);
             ]
         ])->label("Site name");?>
     
+        <?=$form->field($settings['_title_contain_sitename']['value'], "value")
+            ->checkbox([
+                'label' => false, 
+                'name' => 'Setting[_title_contain_sitename]',
+                'id' => 'setting-_title_contain_sitename'
+            ])
+            ->label("Title contain sitename");?>
+    
+        <?=$form->field($settings['_title_separator']['value'], "value", [
+            'inputOptions' => [
+                'name' => 'Setting[_title_separator]',
+                'class' => 'form-control',
+                'id' => 'setting-_title_separator'
+            ]
+        ])->label("Title separator");?>
+    
         <div class="row">
             <div class="col-md-6">
                 <?=$form->field($settings['home_page_type']['value'], "value", [
@@ -76,6 +92,30 @@ $this->registerJsVar('homePageItems', $homePageItems);
                     ->label('Home Page');?>
             </div>
         </div>
+    
+        <?=$form->field($settings['_robots']['value'], "value")
+            ->textarea([
+                'label' => false, 
+                'name' => 'Setting[_robots]',
+                'id' => 'setting-_robots'
+            ])
+            ->label("Robots");?>
+    
+        <?=$form->field($settings['_resources_head']['value'], "value")
+            ->textarea([
+                'label' => false, 
+                'name' => 'Setting[_resources_head]',
+                'id' => 'setting-_resources_head'
+            ])
+            ->label("Resources CSS and Script to Head");?>
+    
+        <?=$form->field($settings['_resources_body']['value'], "value")
+            ->textarea([
+                'label' => false, 
+                'name' => 'Setting[_resources_body]',
+                'id' => 'setting-_resources_body'
+            ])
+            ->label("Resources CSS and Script to End Body");?>
         
         <?= Html::submitButton(Yii::t('sitemanager', 'Save'), ['class' => 'btn btn-primary']) ?>
         

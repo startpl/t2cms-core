@@ -55,7 +55,37 @@ class m191117_062825_sitemanager extends Migration
             'required' => true,
             'autoload' => true,
             'status' => self::STATUS['SYSTEM']
-        ]
+        ],
+        [
+            'name' => '_robots',
+            'required' => false,
+            'autoload' => false,
+            'status' => self::STATUS['GENERAL']
+        ],
+        [
+            'name' => '_title_contain_sitename',
+            'required' => false,
+            'autoload' => true,
+            'status' => self::STATUS['GENERAL']
+        ],
+        [
+            'name' => '_title_separator',
+            'required' => false,
+            'autoload' => true,
+            'status' => self::STATUS['GENERAL']
+        ],
+        [
+            'name' => '_resources_head',
+            'required' => false,
+            'autoload' => true,
+            'status' => self::STATUS['GENERAL']
+        ],
+        [
+            'name' => '_resources_body',
+            'required' => false,
+            'autoload' => true,
+            'status' => self::STATUS['GENERAL']
+        ],
     ];
     
     private $settingsValues = [
@@ -93,7 +123,32 @@ class m191117_062825_sitemanager extends Migration
             'value' => 'default',
             'domain_id' => null,
             'language_id' => null
-        ]
+        ],
+        '_robots' => [
+            'value' => '',
+            'domain_id' => null,
+            'language_id' => null
+        ],
+        '_title_contain_sitename' => [
+            'value' => true,
+            'domain_id' => null,
+            'language_id' => null
+        ],
+        '_title_separator' => [
+            'value' => ' - ',
+            'domain_id' => null,
+            'language_id' => null
+        ],
+        '_resources_head' => [
+            'value' => '',
+            'domain_id' => null,
+            'language_id' => null
+        ],
+        '_resources_body' => [
+            'value' => '',
+            'domain_id' => null,
+            'language_id' => null
+        ],
     ];
     
     /**
@@ -145,7 +200,7 @@ class m191117_062825_sitemanager extends Migration
     public function safeDown()
     {
         echo "m191117_062825_sitemanager cannot be reverted.\n";
-        return false;
+        return true;
     }
     
     private function baseFill()
