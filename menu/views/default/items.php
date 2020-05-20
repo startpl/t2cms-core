@@ -40,7 +40,7 @@ $this->registerJsVar('URL_SORT', yii\helpers\Url::to(['sort', 'id' => $id]));
         </div>
     </div>
     
-    <?=\t2cms\treeview\TreeView::widget([
+    <?= \t2cms\base\widgets\treeview\TreeView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'id' => 'menuItems-grid',
@@ -83,7 +83,7 @@ $this->registerJsVar('URL_SORT', yii\helpers\Url::to(['sort', 'id' => $id]));
                 }
             ],
             [
-                'class' => 't2cms\treeview\base\ActionColumn',
+                'class' => ' \t2cms\base\widgets\treeview\base\ActionColumn',
                 'header' => 'Actions',
                 'template' => '{update} {delete}',
                 'buttons' =>

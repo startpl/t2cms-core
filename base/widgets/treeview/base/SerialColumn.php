@@ -6,7 +6,7 @@
  * @license https://github.com/koperdog/yii2-treeview/blob/master/LICENSE
  */
 
-namespace t2cms\treeview\base;
+namespace t2cms\base\widgets\treeview\base;
 
 /**
  * SerialColumn displays a column of row numbers (1-based).

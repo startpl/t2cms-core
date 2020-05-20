@@ -6,7 +6,7 @@
  * @license https://github.com/koperdog/yii2-treeview/blob/master/LICENSE
  */
 
-namespace t2cms\treeview;
+namespace t2cms\base\widgets\treeview;
 
 use Closure;
 use Yii;
