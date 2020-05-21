@@ -32,35 +32,35 @@ $this->registerJsVar('homePageItems', $homePageItems);
 
     <?php $form = ActiveForm::begin(); ?>
 
-        <?=$form->field($settings['_disconnected']['value'], "value")
+        <?=$form->field($settings['disconnected']['value'], "value")
             ->checkbox([
                 'label' => false, 
-                'name' => 'Setting[_disconnected]',
-                'id' => 'setting-_disconnected'
+                'name' => 'Setting[disconnected]',
+                'id' => 'setting-disconnected'
             ])
             ->label("Disconnected");?>
     
-        <?=$form->field($settings['_site_name']['value'], "value", [
+        <?=$form->field($settings['site_name']['value'], "value", [
             'inputOptions' => [
-                'name' => 'Setting[_site_name]',
+                'name' => 'Setting[site_name]',
                 'class' => 'form-control',
-                'id' => 'setting-_site_name'
+                'id' => 'setting-site_name'
             ]
         ])->label("Site name");?>
     
-        <?=$form->field($settings['_title_contain_sitename']['value'], "value")
+        <?=$form->field($settings['title_contain_sitename']['value'], "value")
             ->checkbox([
                 'label' => false, 
-                'name' => 'Setting[_title_contain_sitename]',
-                'id' => 'setting-_title_contain_sitename'
+                'name' => 'Setting[title_contain_sitename]',
+                'id' => 'setting-title_contain_sitename'
             ])
             ->label("Title contain sitename");?>
     
-        <?=$form->field($settings['_title_separator']['value'], "value", [
+        <?=$form->field($settings['title_separator']['value'], "value", [
             'inputOptions' => [
-                'name' => 'Setting[_title_separator]',
+                'name' => 'Setting[title_separator]',
                 'class' => 'form-control',
-                'id' => 'setting-_title_separator'
+                'id' => 'setting-title_separator'
             ]
         ])->label("Title separator");?>
     
@@ -93,27 +93,27 @@ $this->registerJsVar('homePageItems', $homePageItems);
             </div>
         </div>
     
-        <?=$form->field($settings['_robots']['value'], "value")
+        <?=$form->field($settings['robots']['value'], "value")
             ->textarea([
                 'label' => false, 
-                'name' => 'Setting[_robots]',
-                'id' => 'setting-_robots'
+                'name' => 'Setting[robots]',
+                'id' => 'setting-robots'
             ])
             ->label("Robots");?>
     
-        <?=$form->field($settings['_resources_head']['value'], "value")
+        <?=$form->field($settings['resources_head']['value'], "value")
             ->textarea([
                 'label' => false, 
-                'name' => 'Setting[_resources_head]',
-                'id' => 'setting-_resources_head'
+                'name' => 'Setting[resources_head]',
+                'id' => 'setting-resources_head'
             ])
             ->label("Resources CSS and Script to Head");?>
     
-        <?=$form->field($settings['_resources_body']['value'], "value")
+        <?=$form->field($settings['resources_body']['value'], "value")
             ->textarea([
                 'label' => false, 
-                'name' => 'Setting[_resources_body]',
-                'id' => 'setting-_resources_body'
+                'name' => 'Setting[resources_body]',
+                'id' => 'setting-resources_body'
             ])
             ->label("Resources CSS and Script to End Body");?>
         

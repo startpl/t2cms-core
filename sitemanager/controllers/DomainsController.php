@@ -204,6 +204,7 @@ class DomainsController extends Controller
         try{
             $models = $this->settingRepository->getAllByStatus(
                 [
+                    Setting::STATUS['COMMON'],
                     Setting::STATUS['MAIN'],
                     Setting::STATUS['CUSTOM']
                 ],

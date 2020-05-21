@@ -16,9 +16,10 @@ use Yii;
 class Setting extends \yii\db\ActiveRecord
 {    
     const STATUS = [
-        'GENERAL' => 0, 
-        'MAIN'    => 1, 
-        'CUSTOM'  => 2,
+        'COMMON'  => -1, // common settings
+        'GENERAL' => 0, // basic settings ( only at /manager )
+        'MAIN'    => 1, // domain settings
+        'CUSTOM'  => 2, // custom settings
         'SYSTEM'  => 3
     ];
     

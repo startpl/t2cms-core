@@ -67,7 +67,9 @@ class SettingReadRepository implements ReadReposotory
     
     public function getByName(string $name, $domain_id = null, $language_id = null): ?array
     {           
-        $setting = Setting::find()->where(['name' => $name])->asArray()->one();
+        if(!$setting = Setting::find()->where(['name' => $name])->asArray()->one()) {
+            return null;
+        }
         
         $settingValue = SettingValue::find()
                 ->andWhere(['id' => SettingValue::getSuitableId($setting['id'], $domain_id, $language_id)])

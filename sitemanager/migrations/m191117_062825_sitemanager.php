@@ -4,153 +4,7 @@ use yii\db\Migration;
  * Class m191117_062825_settings
  */
 class m191117_062825_sitemanager extends Migration
-{
-    const STATUS = [
-        'GENERAL' => 0, 
-        'MAIN'    => 1, 
-        'CUSTOM'  => 2,
-        'SYSTEM'  => 3
-    ];
-    
-    
-    private $settings = [
-        [
-            'name' => '_disconnected', 
-            'required' => true,
-            'autoload' => true,
-            'status'   => self::STATUS['GENERAL']
-        ],
-        [
-            'name' => 'disconnected',
-            'required' => true,
-            'autoload' => true,
-            'status'   => self::STATUS['MAIN']
-        ],
-        [
-            'name' => '_site_name',
-            'required' => true,
-            'autoload' => true,
-            'status'   => self::STATUS['GENERAL']
-        ],
-        [
-            'name' => 'site_name',
-            'required' => true,
-            'autoload' => true,
-            'status'   => self::STATUS['MAIN']
-        ],
-        [
-            'name' => 'home_page_type',
-            'required' => true,
-            'autoload' => false,
-            'status' => self::STATUS['GENERAL']
-        ],
-        [
-            'name' => 'home_page',
-            'required' => true,
-            'autoload' => false,
-            'status' => self::STATUS['GENERAL']
-        ],
-        [
-            'name' => 'design',
-            'required' => true,
-            'autoload' => true,
-            'status' => self::STATUS['SYSTEM']
-        ],
-        [
-            'name' => '_robots',
-            'required' => false,
-            'autoload' => false,
-            'status' => self::STATUS['GENERAL']
-        ],
-        [
-            'name' => '_title_contain_sitename',
-            'required' => false,
-            'autoload' => true,
-            'status' => self::STATUS['GENERAL']
-        ],
-        [
-            'name' => '_title_separator',
-            'required' => false,
-            'autoload' => true,
-            'status' => self::STATUS['GENERAL']
-        ],
-        [
-            'name' => '_resources_head',
-            'required' => false,
-            'autoload' => true,
-            'status' => self::STATUS['GENERAL']
-        ],
-        [
-            'name' => '_resources_body',
-            'required' => false,
-            'autoload' => true,
-            'status' => self::STATUS['GENERAL']
-        ],
-    ];
-    
-    private $settingsValues = [
-        '_disconnected' => [
-            'value' => 0,
-            'domain_id' => null,
-            'language_id' => null
-        ],
-        'disconnected' => [
-            'value' => 0,
-            'domain_id' => null,
-            'language_id' => null
-        ],
-        '_site_name' => [
-            'value' => 'New site',
-            'domain_id' => null,
-            'language_id' => null
-        ],
-        'site_name' => [
-            'value' => 'New site',
-            'domain_id' => null,
-            'language_id' => null
-        ],
-        'home_page_type' => [
-            'value' => 0,
-            'domain_id' => null,
-            'language_id' => null
-        ],
-        'home_page' => [
-            'value' => 1,
-            'domain_id' => null,
-            'language_id' => null
-        ],
-        'design' => [
-            'value' => 'default',
-            'domain_id' => null,
-            'language_id' => null
-        ],
-        '_robots' => [
-            'value' => '',
-            'domain_id' => null,
-            'language_id' => null
-        ],
-        '_title_contain_sitename' => [
-            'value' => true,
-            'domain_id' => null,
-            'language_id' => null
-        ],
-        '_title_separator' => [
-            'value' => ' - ',
-            'domain_id' => null,
-            'language_id' => null
-        ],
-        '_resources_head' => [
-            'value' => '',
-            'domain_id' => null,
-            'language_id' => null
-        ],
-        '_resources_body' => [
-            'value' => '',
-            'domain_id' => null,
-            'language_id' => null
-        ],
-    ];
-    
+{        
     /**
      * {@inheritdoc}
      */
@@ -228,15 +82,16 @@ class m191117_062825_sitemanager extends Migration
             'is_default' => false
         ]);
         
+        $settings = require (__DIR__ . DIRECTORY_SEPARATOR . '/settings.php');
         
-        foreach($this->settings as $key => $value){
+        foreach($settings as $key => $value){
+            $settingValue = $value['defaultValue'];
+            unset($value['defaultValue']);
             $this->insert('{{%setting}}', $value);
             
             $settingID = $this->db->lastInsertID;
-            
-            $tmp = $this->settingsValues[$value['name']];
-            $tmp['src_id'] = $settingID;
-            $this->insert('{{%setting_value}}', $tmp);
+            $settingValue['src_id'] = $settingID;
+            $this->insert('{{%setting_value}}', $settingValue);
         }
     }
 }

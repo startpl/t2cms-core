@@ -78,7 +78,10 @@ class DefaultController extends Controller
         $domain_id   = null;
         
         $settings = $this->findModels(
-                Setting::STATUS['GENERAL'],
+                [
+                    Setting::STATUS['GENERAL'],
+                    Setting::STATUS['COMMON'],
+                ],
                 $domain_id,
                 $language_id
                 );
