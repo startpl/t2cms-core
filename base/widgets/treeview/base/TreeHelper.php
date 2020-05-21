@@ -9,6 +9,7 @@
 namespace t2cms\base\widgets\treeview\base;
 
 use yii\base\Model;
+use t2cms\base\widgets\treeview\TreeView;
 
 /**
  * Helper class preparing models for finding, building a tree
@@ -25,9 +26,9 @@ class TreeHelper {
     /**
      * TreeView object owner helper
      * 
-     * @param \t2cms\treeview\TreeView $context
+     * @param \t2cms\base\widgets\treeview\TreeView $context
      */
-    public function __construct(\t2cms\treeview\TreeView $context)
+    public function __construct(TreeView $context)
     {
         $this->grid = $context;
     }

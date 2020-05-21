@@ -72,7 +72,7 @@ class TreeView extends BaseListView
 
     /**
      * @var string the default data column class if the class name is not explicitly specified when configuring a data column.
-     * Defaults to 't2cms\treeview\base\DataColumn'.
+     * Defaults to '\t2cms\base\widgets\treeview\base\DataColumn'.
      */
     public $dataColumnClass;
     /**

@@ -83,7 +83,7 @@ $this->registerJsVar('URL_SORT', yii\helpers\Url::to(['sort', 'id' => $id]));
                 }
             ],
             [
-                'class' => ' \t2cms\base\widgets\treeview\base\ActionColumn',
+                'class' => '\t2cms\base\widgets\treeview\base\ActionColumn',
                 'header' => 'Actions',
                 'template' => '{update} {delete}',
                 'buttons' =>

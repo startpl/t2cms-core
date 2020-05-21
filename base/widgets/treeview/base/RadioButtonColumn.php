@@ -21,7 +21,7 @@ use yii\helpers\Html;
  * 'columns' => [
  *     // ...
  *     [
- *         'class' => 't2cms\treeview\base\RadioButtonColumn',
+ *         'class' => '\t2cms\base\widgets\treeview\base\RadioButtonColumn',
  *         'radioOptions' => function ($model) {
  *              return [
  *                  'value' => $model['value'],

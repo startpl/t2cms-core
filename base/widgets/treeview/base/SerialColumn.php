@@ -16,7 +16,7 @@ namespace t2cms\base\widgets\treeview\base;
  * ```php
  * 'columns' => [
  *     [
- *         'class' => 't2cms\treeview\base\SerialColumn',
+ *         'class' => '\t2cms\base\widgets\treeview\base\SerialColumn',
  *     ],
  * ]
  * ```

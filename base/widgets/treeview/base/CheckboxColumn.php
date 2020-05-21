@@ -22,7 +22,7 @@ use yii\helpers\Json;
  * 'columns' => [
  *     // ...
  *     [
- *         'class' => 't2cms\treeview\CheckboxColumn',
+ *         'class' => '\t2cms\base\widgets\treeview\CheckboxColumn',
  *         // you may configure additional properties here
  *     ],
  * ]
