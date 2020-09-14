@@ -74,7 +74,7 @@ class ModuleService
             $result[] = $this->getModule($module->path);
         }
         
-        return $result;
+        return array_filter($result);
     }
     
     public function install(ModuleDTO $module): bool
@@ -178,5 +178,12 @@ class ModuleService
         }
         
         return $result;
+    }
+    
+    public function isActive(string $path): bool
+    {
+        $module = $this->getModule($path);
+        
+        return $module->status === Module::STATUS_ACTIVE;
     }
 }

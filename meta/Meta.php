@@ -10,7 +10,7 @@ namespace t2cms\meta;
 
 /**
  * Meta helper, replace variables in text to settings 
- * example: 'current city [[city]]', [[city]] will be replace by the current City variable from Settings
+ * example: Meta::t('current city [[city]]'); // [[city]] will be replace by the current City variable from Settings
  * 
  * @author Koperdog <koperdog.dev@gmail.com>
  */

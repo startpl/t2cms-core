@@ -97,4 +97,9 @@ class Languages extends \yii\base\Component
     {
         return \t2cms\sitemanager\useCases\UserService::setLanguage($code);
     }
+    
+    public static function getLanguage(): ?string
+    {
+        return \t2cms\sitemanager\useCases\UserService::getLanguage();
+    }
 }

@@ -83,7 +83,7 @@ class DefaultController extends Controller
     public function actionInstall($path)
     {
         $module = $this->getModule($path);
-        
+                
         if($this->moduleService->install($module)){
             \Yii::$app->session->setFlash('success', \Yii::t('app', 'Success install'));
         } else {

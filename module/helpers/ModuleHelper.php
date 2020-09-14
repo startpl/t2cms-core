@@ -22,6 +22,11 @@ class ModuleHelper
         return self::getModuleServiceInstance()->getAllActive();
     }
     
+    public static function isActive(string $modulePath): bool
+    {
+        return self::getModuleServiceInstance()->isActive($modulePath);
+    }
+    
     private static function getModuleServiceInstance()
     {
         if(!self::$moduleService) {

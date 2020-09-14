@@ -33,4 +33,9 @@ class UserService
         
         return true;
     }
+    
+    public static function getLanguage(): ?string
+    {
+        return \Yii::$app->response->cookies->getValue('langauge');
+    }
 }

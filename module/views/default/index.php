@@ -16,10 +16,12 @@ $this->registerJsVar('urlShowMenuToggle', \yii\helpers\Url::to(['show-menu-toggl
 t2cms\T2Asset::register($this);
 ?>
 <div class="module-index">
-
+    <?php if(\Yii::$app->session->hasFlash('error/info')):?>
+        <pre><?=\Yii::$app->session->getFlash('error/info')?></pre>
+    <?php endif;?>
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php Pjax::begin(); ?>
+    <?php // Pjax::begin(); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -63,25 +65,29 @@ t2cms\T2Asset::register($this);
                 'options' => ['width'=>'120px'],
                 'format'    => 'raw',
                 'value' => function($model, $key, $index){
-                    if($model->status !== t2cms\module\models\Module::STATUS_NEW
-                        && $model->status !== t2cms\module\models\Module::STATUS_UNINSTALL
-                    ) {
-                        $html  = Html::beginTag('div', ['class' => 'switch_checkbox']);
-                        $html .= Html::checkbox(
-                                    "showInMenu[{$model->path}]", 
-                                    $model->show_in_menu, 
-                                    [
-                                        'id' => 'show_in_menu'.$model->path, 
-                                        'class' => 'change-show_in_menu',
-                                        'data' => [
-                                            'path' => $model->path
+                    switch($model->status) {
+                        case t2cms\module\models\Module::STATUS_ACTIVE:
+                            $html  = Html::beginTag('div', ['class' => 'switch_checkbox']);
+                            $html .= Html::checkbox(
+                                        "showInMenu[{$model->path}]", 
+                                        $model->show_in_menu, 
+                                        [
+                                            'id' => 'show_in_menu'.$model->path, 
+                                            'class' => 'change-show_in_menu',
+                                            'data' => [
+                                                'path' => $model->path
+                                            ]
                                         ]
-                                    ]
-                                );
-                        $html .= Html::label('Switch', 'show_in_menu'.$model->path);
-                        $html .= Html::endTag('div');
-                    } else {
-                        $html = \Yii::t('t2cms', 'Not installed');
+                                    );
+                            $html .= Html::label('Switch', 'show_in_menu'.$model->path);
+                            $html .= Html::endTag('div');
+                            break;
+                        case t2cms\module\models\Module::STATUS_INSTALL:
+                        case t2cms\module\models\Module::STATUS_INACTIVE:
+                            $html = \Yii::t('t2cms', 'Not active');
+                            break;
+                        default: 
+                            $html = \Yii::t('t2cms', 'Not installed');
                     }
                     return $html;
                 }
@@ -100,7 +106,7 @@ t2cms\T2Asset::register($this);
         ],
     ]); ?>
 
-    <?php Pjax::end(); ?>
+    <?php // Pjax::end(); ?>
 
 </div>
 

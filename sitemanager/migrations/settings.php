@@ -50,7 +50,7 @@ return [
         'autoload' => true,
         'status' => t2cms\sitemanager\models\Setting::STATUS['SYSTEM'],
         'defaultValue' => [
-            'value' => 'default',
+            'value' => 'first-theme',
             'domain_id' => null,
             'language_id' => null
         ],

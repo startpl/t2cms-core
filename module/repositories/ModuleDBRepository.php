@@ -114,7 +114,7 @@ class ModuleDBRepository
     
     public function getAllToShowMenu(): ?array
     {
-        return Module::find()->where(['show_in_menu' => true])->all();
+        return Module::find()->where(['show_in_menu' => true, 'status' => Module::STATUS_ACTIVE])->all();
     }
     
     private function setStatus(\t2cms\module\dto\ModuleDTO $module, int $status): bool

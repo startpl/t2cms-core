@@ -41,6 +41,7 @@ class ModuleBootstrap implements \yii\base\BootstrapInterface
         $modules = $this->service->getAllActive();
         
         foreach($modules as $module){
+            $this->bootstrapModule($app, $module);
             $this->connectModule($module);
         }
     }
@@ -50,6 +51,18 @@ class ModuleBootstrap implements \yii\base\BootstrapInterface
         $app = $this->appId == self::BACKEND? $this->app->getModule(self::MODULE_MANAGER) : $this->app;
         if(!$this->setModule($app, $module, self::COMMON)){
             $this->setModule($app, $module, $this->appId);
+        }
+    }
+    
+    private function bootstrapModule($app, ModuleDTO $module)
+    {   
+        if(!file_exists(\Yii::getAlias('@modules/'.$module->path.'/Bootstrap.php'))) return;
+        try {
+            $bootstrapName = $module->namespace . '\Bootstrap';
+            $moduleBoot = new $bootstrapName;
+            $moduleBoot->bootstrap($app);
+        } catch(\Exception $e) {
+            
         }
     }
     
