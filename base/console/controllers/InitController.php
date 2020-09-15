@@ -19,13 +19,12 @@ use yii\helpers\Console;
  */
 class InitController extends Controller 
 {    
-    const MIGRATION_PATH = '';
+    const MIGRATION_PATH = '@vendor/';
     const MIGRATIONS = [
-        '@vendor/startpl/t2cms-core/sitemanager/migrations',
-        '@vendor/startpl/t2cms-core/module/migrations',
-        '@vendor/startpl/t2cms-core/menu/migrations',
-        '@vendor/startpl/t2cms-blog/migrations',
-        '@modules/t2cms-acf/backend/migrations',
+        'startpl/t2cms-core/sitemanager/migrations',
+        'startpl/t2cms-core/module/migrations',
+        'startpl/t2cms-core/menu/migrations',
+        'startpl/t2cms-blog/migrations',
     ];
     
     private $migration;
@@ -43,8 +42,6 @@ class InitController extends Controller
         foreach(self::MIGRATIONS as $path) {
             $this->migration->runAction('up', ['migrationPath' => self::MIGRATION_PATH . $path, 'interactive' => false]);   
         }
-        
-        
         
         $this->stdout("SUCCESS INIT T2CMS." . PHP_EOL, Console::BG_GREEN, Console::FG_BLACK);
     }

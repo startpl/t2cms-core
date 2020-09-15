@@ -54,13 +54,13 @@ class MenuItem extends \yii\db\ActiveRecord
     {
         return [
             [['type'], 'required'],
-            [['type', 'tree', 'lft', 'rgt', 'depth', 'parent_id'], 'integer'],
+            [['type', 'tree', 'lft', 'rgt', 'depth', 'parent_id', 'menu'], 'integer'],
             [['status', 'target', 'render_js'], 'boolean'],
             [['data', 'image', 'access'], 'string', 'max' => 255],
             [['status'], 'default', 'value' => true],
             [['target'], 'default', 'value' => self::TARGET_CURRENT],
             
-            [['tree'], 'exist', 'skipOnError' => true, 'targetClass' => Menu::className(), 'targetAttribute' => ['tree' => 'id']],
+            [['menu'], 'exist', 'skipOnError' => true, 'targetClass' => Menu::className(), 'targetAttribute' => ['menu' => 'id']],
         ];
     }
     
@@ -146,7 +146,8 @@ class MenuItem extends \yii\db\ActiveRecord
                 $query->andWhere(['IN','menu_item_content.id', $in]);
             }])
             ->select(['menu_item.id', 'tree', 'depth', 'lft', 'menu_item_content.name'])
-            ->andWhere(['NOT IN', 'menu_item.id', $tree])
+            ->andWhere(['IN', 'menu_item.tree', $tree])
+            ->andWhere(['!=', 'menu_item.type', self::TYPE_ROOT])
             ->andWhere(['NOT IN', 'menu_item.id', $children])
             ->orderBy('tree, lft')
             ->all();

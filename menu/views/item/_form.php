@@ -146,9 +146,9 @@ foreach($roles as &$role) {
                                     'id' => 'menuitem-data'
                                 ]
                             ])->hiddenInput()->label(false)?>
-
+                        
                             <?= $form->field($model, 'parent_id')->dropDownList(
-                                MenuItem::getTree($menuId, $itemId, Domains::getEditorDomainId(), Languages::getEditorLangaugeId()), 
+                                MenuItem::getTree($menuTree, $itemId, Domains::getEditorDomainId(), Languages::getEditorLangaugeId()), 
                                 ['prompt' => Yii::t('menu','No Parent'), 'class' => 'form-control']
                             )?>
                         

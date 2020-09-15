@@ -95,7 +95,7 @@ class DefaultController extends Controller
             }
         }
         else if(Yii::$app->request->post() && !$model->validate()){
-            \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error create'));
+            \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error create (validate)'));
         }
         
         return $this->render('create', ['model' => $form]);

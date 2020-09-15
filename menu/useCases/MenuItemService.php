@@ -54,6 +54,7 @@ class MenuItemService
             'access'    => $form->access,
             'render_js' => $form->render_js,
             'image'     => $form->image,
+            'menu'      => $id,
         ]);
         
         $itemContent = new MenuItemContent([
@@ -85,7 +86,7 @@ class MenuItemService
         try{
             if($model->getDirtyAttributes(['parent_id']) && ($model->id != $model->parent_id)){
                 if(empty($model->parent_id)){
-                    $menu = $this->menuItemRepository->getRoot($model->tree);
+                    $menu = $this->menuItemRepository->getRoot($model->menu);
                     $model->parent_id = $menu->id;
                 }
                 $this->menuItemRepository->appendTo($model);

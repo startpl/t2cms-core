@@ -99,9 +99,11 @@ class ItemController extends Controller
         $pages      = \startpl\t2cmsblog\helpers\PageHelper::getAll();
         $categories = \startpl\t2cmsblog\helpers\CategoryHelper::getAll();
         $modules    = \t2cms\module\helpers\ModuleHelper::getAllActive();
+        $menuRoot   = $this->menuItemRepository->getRoot($menuId);
         
         return $this->render('create',[
             'menuId'  => $menuId,
+            'menuTree' => $menuRoot->id,
             'model' => $form,
             'pages' => $pages,
             'categories' => $categories,
@@ -130,7 +132,7 @@ class ItemController extends Controller
             }
         }
         else if(Yii::$app->request->post() && (!$model->validate() || !$model->itemContent->validate())){
-            \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error save'));
+            \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error save (validation)'));
         }
         
         $pages      = \startpl\t2cmsblog\helpers\PageHelper::getAll();
@@ -138,7 +140,8 @@ class ItemController extends Controller
         $modules    = \t2cms\module\helpers\ModuleHelper::getAllActive();
         
         return $this->render('update',[
-            'menuId'  => $model->tree,
+            'menuId'  => $model->menu,
+            'menuTree' => $model->tree,
             'model' => $model,
             'pages' => $pages,
             'categories' => $categories,
@@ -157,7 +160,7 @@ class ItemController extends Controller
             \Yii::$app->session->setFlash('error', \Yii::t('menu/error', 'Error delete'));
         }
         
-        return $this->redirect(['/menu/items', 'id' => $model->tree]);
+        return $this->redirect(['/menu/items', 'id' => $model->menu]);
     }
     
     private function findModel(int $id, $domain_id = null, $language_id = null)

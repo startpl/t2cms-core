@@ -49,10 +49,11 @@ class MenuService
         try{
             $this->menuRepository->save($menu);
             
-            $menuRoot->tree = $menu->id;
+            $menuRoot->menu = $menu->id;            
             $this->menuItemRepository->makeRoot($menuRoot);
             $transaction->commit();
         } catch (\Exception $e) {
+            debug($e);
             $transaction->rollBack();
             return null;
         }

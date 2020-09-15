@@ -60,10 +60,10 @@ class MenuItemReadRepository
         return null;
     }
     
-    public static function getRoot(int $treeId): ?MenuItem
+    public static function getRoot(int $menuId): ?MenuItem
     {
         $model = MenuItem::find()
-                ->where(['tree' => $treeId, 'type' => MenuItem::TYPE_ROOT])
+                ->where(['menu' => $menuId, 'type' => MenuItem::TYPE_ROOT])
                 ->one();
         
         if(!$model){

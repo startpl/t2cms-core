@@ -21,6 +21,7 @@ class MenuUrl{
     
     public static function to($item, $absolute = false, $scheme = false): string
     {
+        $absolute = (end(explode('-', \Yii::$app->id)) == 'backend')? true : $absolute;
         if($item instanceOf MenuItem){
             $item = \yii\helpers\ArrayHelper::toArray($item);
         }
@@ -42,7 +43,7 @@ class MenuUrl{
         }
         
         if(!is_array($url)) return $url;
-        
+                
         return $absolute? 
                 \Yii::$app->urlManagerFrontend->createAbsoluteUrl($url, $scheme)
                 : \Yii::$app->urlManagerFrontend->createUrl($url, $scheme);
