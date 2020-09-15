@@ -19,12 +19,13 @@ use yii\helpers\Console;
  */
 class InitController extends Controller 
 {    
-    const MIGRATION_PATH = '@vendor/';
+    const MIGRATION_PATH = '';
     const MIGRATIONS = [
-        't2cms-core/sitemanager/migrations',
-        't2cms-core/module/migrations',
-        't2cms-core/menu/migrations',
-        't2cms-blog/migrations'
+        '@vendor/startpl/t2cms-core/sitemanager/migrations',
+        '@vendor/startpl/t2cms-core/module/migrations',
+        '@vendor/startpl/t2cms-core/menu/migrations',
+        '@vendor/startpl/t2cms-blog/migrations',
+        '@modules/t2cms-acf/backend/migrations',
     ];
     
     private $migration;
