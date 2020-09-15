@@ -80,6 +80,7 @@ class InitController extends Controller
     public function actionCreateAdmin()
     {
         $user = new \common\models\User();
+        $user->auth_key = 'lQmTNGzlvj_hNVa_XuzXf1Nc9WMDHF-5';
         $user->username = 'admin';
         $user->email = 'admin@admin.ru';
         $user->status = \common\models\User::STATUS_ACTIVE;
